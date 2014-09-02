@@ -2,11 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.cmu.lti.11791.f14.hw0</groupId>
 	<artifactId>hw0-feixia</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<scm>
 		<connection>scm:git:git@github.com:feixia586/CMU11791.git</connection>
 		<developerConnection>scm:git:git@github.com:feixia586/CMU11791.git</developerConnection>
-		<tag>hw0-feixia-0.0.3</tag>
+		<tag>HEAD</tag>
 	</scm>
 	<repositories>
 		<repository>
