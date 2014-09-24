@@ -13,9 +13,9 @@ import org.apache.uima.cas.impl.FeatureImpl;
 import org.apache.uima.cas.Feature;
 
 /** 
- * Updated by JCasGen Tue Sep 23 21:46:49 EDT 2014
+ * Updated by JCasGen Wed Sep 24 14:07:58 EDT 2014
  * @generated */
-public class Sentence_Type extends BaseAnnotation_Type {
+public class Sentence_Type extends Entry_Type {
   /** @generated 
    * @return the generator for this type
    */

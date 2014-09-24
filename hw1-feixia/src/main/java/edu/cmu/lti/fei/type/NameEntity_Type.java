@@ -13,9 +13,9 @@ import org.apache.uima.cas.impl.FeatureImpl;
 import org.apache.uima.cas.Feature;
 
 /** 
- * Updated by JCasGen Tue Sep 23 21:46:49 EDT 2014
+ * Updated by JCasGen Wed Sep 24 14:07:58 EDT 2014
  * @generated */
-public class NameEntity_Type extends BaseAnnotation_Type {
+public class NameEntity_Type extends Sentence_Type {
   /** @generated 
    * @return the generator for this type
    */
@@ -44,30 +44,6 @@ public class NameEntity_Type extends BaseAnnotation_Type {
      @modifiable */
   @SuppressWarnings ("hiding")
   public final static boolean featOkTst = JCasRegistry.getFeatOkTst("edu.cmu.lti.fei.type.NameEntity");
- 
-  /** @generated */
-  final Feature casFeat_identifier;
-  /** @generated */
-  final int     casFeatCode_identifier;
-  /** @generated
-   * @param addr low level Feature Structure reference
-   * @return the feature value 
-   */ 
-  public String getIdentifier(int addr) {
-        if (featOkTst && casFeat_identifier == null)
-      jcas.throwFeatMissing("identifier", "edu.cmu.lti.fei.type.NameEntity");
-    return ll_cas.ll_getStringValue(addr, casFeatCode_identifier);
-  }
-  /** @generated
-   * @param addr low level Feature Structure reference
-   * @param v value to set 
-   */    
-  public void setIdentifier(int addr, String v) {
-        if (featOkTst && casFeat_identifier == null)
-      jcas.throwFeatMissing("identifier", "edu.cmu.lti.fei.type.NameEntity");
-    ll_cas.ll_setStringValue(addr, casFeatCode_identifier, v);}
-    
-  
  
   /** @generated */
   final Feature casFeat_boffset;
@@ -127,10 +103,6 @@ public class NameEntity_Type extends BaseAnnotation_Type {
   public NameEntity_Type(JCas jcas, Type casType) {
     super(jcas, casType);
     casImpl.getFSClassRegistry().addGeneratorForType((TypeImpl)this.casType, getFSGenerator());
-
- 
-    casFeat_identifier = jcas.getRequiredFeatureDE(casType, "identifier", "uima.cas.String", featOkTst);
-    casFeatCode_identifier  = (null == casFeat_identifier) ? JCas.INVALID_FEATURE_CODE : ((FeatureImpl)casFeat_identifier).getCode();
 
  
     casFeat_boffset = jcas.getRequiredFeatureDE(casType, "boffset", "uima.cas.Integer", featOkTst);

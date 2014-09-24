@@ -10,10 +10,10 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Tue Sep 23 21:46:49 EDT 2014
- * XML source: /home/fei/Projects/java_workspace/CMU11791/hw1-feixia/src/main/resources/descriptors/AAE.xml
+ * Updated by JCasGen Wed Sep 24 14:07:58 EDT 2014
+ * XML source: /home/fei/Projects/java_workspace/CMU11791/hw1-feixia/src/main/resources/descriptors/TypeSystemDescriptor.xml
  * @generated */
-public class NameEntity extends BaseAnnotation {
+public class NameEntity extends Sentence {
   /** @generated
    * @ordered 
    */
@@ -74,28 +74,6 @@ public class NameEntity extends BaseAnnotation {
   private void readObject() {/*default - does nothing empty block */}
      
  
-    
-  //*--------------*
-  //* Feature: identifier
-
-  /** getter for identifier - gets 
-   * @generated
-   * @return value of the feature 
-   */
-  public String getIdentifier() {
-    if (NameEntity_Type.featOkTst && ((NameEntity_Type)jcasType).casFeat_identifier == null)
-      jcasType.jcas.throwFeatMissing("identifier", "edu.cmu.lti.fei.type.NameEntity");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((NameEntity_Type)jcasType).casFeatCode_identifier);}
-    
-  /** setter for identifier - sets  
-   * @generated
-   * @param v value to set into the feature 
-   */
-  public void setIdentifier(String v) {
-    if (NameEntity_Type.featOkTst && ((NameEntity_Type)jcasType).casFeat_identifier == null)
-      jcasType.jcas.throwFeatMissing("identifier", "edu.cmu.lti.fei.type.NameEntity");
-    jcasType.ll_cas.ll_setStringValue(addr, ((NameEntity_Type)jcasType).casFeatCode_identifier, v);}    
-   
     
   //*--------------*
   //* Feature: boffset

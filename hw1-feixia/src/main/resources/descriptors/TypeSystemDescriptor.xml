@@ -25,7 +25,7 @@
     <typeDescription>
       <name>edu.cmu.lti.fei.type.Sentence</name>
       <description/>
-      <supertypeName>edu.cmu.lti.fei.type.BaseAnnotation</supertypeName>
+      <supertypeName>edu.cmu.lti.fei.type.Entry</supertypeName>
       <features>
         <featureDescription>
           <name>identifier</name>
@@ -42,13 +42,8 @@
   <typeDescription>
       <name>edu.cmu.lti.fei.type.NameEntity</name>
       <description/>
-      <supertypeName>edu.cmu.lti.fei.type.BaseAnnotation</supertypeName>
+      <supertypeName>edu.cmu.lti.fei.type.Sentence</supertypeName>
       <features>
-        <featureDescription>
-          <name>identifier</name>
-          <description/>
-          <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
         <featureDescription>
           <name>boffset</name>
           <description/>

@@ -10,10 +10,10 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Tue Sep 23 21:46:49 EDT 2014
- * XML source: /home/fei/Projects/java_workspace/CMU11791/hw1-feixia/src/main/resources/descriptors/AAE.xml
+ * Updated by JCasGen Wed Sep 24 14:07:58 EDT 2014
+ * XML source: /home/fei/Projects/java_workspace/CMU11791/hw1-feixia/src/main/resources/descriptors/TypeSystemDescriptor.xml
  * @generated */
-public class Sentence extends BaseAnnotation {
+public class Sentence extends Entry {
   /** @generated
    * @ordered 
    */
