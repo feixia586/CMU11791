@@ -20,6 +20,11 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
+/**
+ * 
+ * @author Fei Xia
+ *
+ */
 public class BSNameEntityAnnotator extends JCasAnnotator_ImplBase {
 
   @Override

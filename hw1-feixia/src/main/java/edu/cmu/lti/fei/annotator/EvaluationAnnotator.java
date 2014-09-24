@@ -13,6 +13,11 @@ import org.apache.uima.resource.ResourceInitializationException;
 import edu.cmu.lti.fei.type.NameEntity;
 import edu.cmu.lti.fei.util.FileOp;
 
+/**
+ * 
+ * @author Fei Xia <feixia@cs.cmu.edu>
+ *
+ */
 public class EvaluationAnnotator extends JCasAnnotator_ImplBase {
 
   private String mGoldFilePath;

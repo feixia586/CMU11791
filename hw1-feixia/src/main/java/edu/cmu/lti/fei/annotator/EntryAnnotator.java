@@ -6,6 +6,12 @@ import org.apache.uima.jcas.JCas;
 
 import edu.cmu.lti.fei.type.Entry;
 
+/**
+ * An annotator that discovers  
+ * 
+ * @author Fei Xia <feixia@cs.cmu.edu>
+ *
+ */
 public class EntryAnnotator extends JCasAnnotator_ImplBase {
 
   @Override

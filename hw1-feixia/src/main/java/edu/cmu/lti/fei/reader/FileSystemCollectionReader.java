@@ -42,6 +42,7 @@ import edu.cmu.lti.fei.type.SourceDocumentInformation;
  * configured with the following parameters:
  * <ul>
  * <li><code>InputDirectory</code> - path to directory containing files</li>
+ * <li><code>InputFile</code> - input file name</li>
  * <li><code>Encoding</code> (optional) - character encoding of the input files</li>
  * <li><code>Language</code> (optional) - language of the input documents</li>
  * </ul>
@@ -55,6 +56,9 @@ public class FileSystemCollectionReader extends CollectionReader_ImplBase {
    */
   public static final String PARAM_INPUTDIR = "InputDirectory";
   
+  /**
+   * Name of configuration parameter that must be set to the name of the input file
+   */
   public static final String PARAM_INPUTFILE = "InputFile";
 
   /**
@@ -69,14 +73,29 @@ public class FileSystemCollectionReader extends CollectionReader_ImplBase {
    */
   public static final String PARAM_LANGUAGE = "Language";
 
+  /**
+   * File list
+   */
   private ArrayList<File> mFiles;
   
+  /**
+   * The name of the file you want to process
+   */
   private String mFileName;
 
+  /**
+   * Encoding style of the file
+   */
   private String mEncoding;
 
+  /**
+   * Language of the file
+   */
   private String mLanguage;
   
+  /**
+   * The curre
+   */
   private int mCurrentIndex;
 
   /**
