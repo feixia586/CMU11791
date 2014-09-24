@@ -94,7 +94,7 @@ public class FileSystemCollectionReader extends CollectionReader_ImplBase {
   private String mLanguage;
   
   /**
-   * The curre
+   * The index of the current visiting file
    */
   private int mCurrentIndex;
 
@@ -141,7 +141,7 @@ public class FileSystemCollectionReader extends CollectionReader_ImplBase {
     // open input stream to file
     File file = (File) mFiles.get(mCurrentIndex++);
     String text = FileUtils.file2String(file, mEncoding);
-      // put document in CAS
+    // put document in CAS
     jcas.setDocumentText(text);
 
     // set language if it was explicitly specified as a configuration parameter

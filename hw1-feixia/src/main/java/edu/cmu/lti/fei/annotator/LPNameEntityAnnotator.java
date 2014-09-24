@@ -18,12 +18,31 @@ import com.aliasi.util.AbstractExternalizable;
 import edu.cmu.lti.fei.type.NameEntity;
 import edu.cmu.lti.fei.type.Sentence;
 
+/**
+ * An annotator that discovers Gene Name Entity in the document text. This uses
+ * LingPipe tool and a pretrained model to do the annotation. It won't give 
+ * confidence of the annotation.
+ * 
+ * @author Fei Xia <feixia@cs.cmu.edu>
+ *
+ */
 public class LPNameEntityAnnotator extends JCasAnnotator_ImplBase {
 
+  /**
+   * The model path
+   */
   private String mModelPath;
 
+  /**
+   * The Chunker instance, used to do the annotation
+   */
   private Chunker mChunker = null;
 
+  /**
+   * Perform initialization logic. Read the model and initialize the mChunker.
+   * 
+   * @param aContext the UimaContext object
+   */
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
     mModelPath = (String) getContext().getConfigParameterValue("ModelPath");
@@ -35,14 +54,18 @@ public class LPNameEntityAnnotator extends JCasAnnotator_ImplBase {
     }
   }
 
+  /**
+   * Annotate to find out the Gene Name Entity. This use LingPipe and a pretrained model to do 
+   * annotation. 
+   * 
+   * @see org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
+   */
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
-    // TODO Auto-generated method stub
     FSIndex<?> SentenceIndex = aJCas.getAnnotationIndex(Sentence.type);
     Iterator<?> SentenceIter = SentenceIndex.iterator();
 
-    // init LingPipe Model
-
+    // iterate all sentences
     int num = 0;
     while (SentenceIter.hasNext()) {
       num++;
@@ -53,6 +76,7 @@ public class LPNameEntityAnnotator extends JCasAnnotator_ImplBase {
       Sentence sentence = (Sentence) SentenceIter.next();
       String text = sentence.getCoveredText();
 
+      // get annotated chunks
       Set<Chunk> chunkSet = mChunker.chunk(text).chunkSet();
       for (Chunk chunk : chunkSet) {
         NameEntity annot = new NameEntity(aJCas);
@@ -67,6 +91,7 @@ public class LPNameEntityAnnotator extends JCasAnnotator_ImplBase {
         int begin_offset = Bprev.replaceAll("\\s+", "").length();
         int end_offset = Eprev.replaceAll("\\s+", "").length();
 
+        // add to aJCas
         annot.setBegin(begin + sentence.getBegin());
         annot.setEnd(end + sentence.getBegin());
         annot.setBoffset(begin_offset);

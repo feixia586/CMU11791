@@ -7,6 +7,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Perform Basic File Operation, read or write.
+ * 
+ * @author Fei Xia <feixia@cs.cmu.edu>
+ *
+ */
 public class FileOp {
 	/**
 	 * Open a the file in filepath and write the content into it.

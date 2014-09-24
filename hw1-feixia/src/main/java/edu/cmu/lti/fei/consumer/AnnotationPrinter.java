@@ -39,8 +39,7 @@ import edu.cmu.lti.fei.type.NameEntity;
 import edu.cmu.lti.fei.type.SourceDocumentInformation;
 
 /**
- * An example of CAS Consumer. <br>
- * AnnotationPrinter prints to an output file all annotations in the CAS. <br>
+ * AnnotationPrinter prints to an output file the gene entity annotation in the CAS. <br>
  * Parameters needed by the AnnotationPrinter are
  * <ol>
  * <li> "outputFile" : file to which the output files should be written.</li>

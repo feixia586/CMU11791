@@ -14,25 +14,43 @@ import edu.cmu.lti.fei.type.NameEntity;
 import edu.cmu.lti.fei.util.FileOp;
 
 /**
+ * The evaluator. It is used to evaluate the gene name entity recognition.
  * 
  * @author Fei Xia <feixia@cs.cmu.edu>
  *
  */
 public class EvaluationAnnotator extends JCasAnnotator_ImplBase {
 
+  /**
+   * Groud truth data path
+   */
   private String mGoldFilePath;
 
+  /**
+   * Ground truth data content
+   */
   private String mGoldContent;
 
+  /**
+   * Perform initialization logic. Load the ground truth data.
+   * 
+   * @param aContext the UimaContext object
+   * @see org.apache.uima.analysis_component.AnalysisComponent_ImplBase#initialize(org.apache.uima.UimaContext)
+   */
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
     mGoldFilePath = (String) getContext().getConfigParameterValue("GoldFilePath");
     mGoldContent = FileOp.readFromFile(mGoldFilePath);
   }
 
+  /**
+   * Calculate the precision, recall and F-1 score.
+   * 
+   * @param aJCas the JCas object
+   * @see org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
+   */
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
-    // TODO Auto-generated method stub
     Set<String> goldSet = getGoldSet();
     Set<String> mySet = getMySet(aJCas);
     
@@ -46,10 +64,12 @@ public class EvaluationAnnotator extends JCasAnnotator_ImplBase {
       }
     }
     
+    // calculate
     double precision = TP / (double)(TP + FP);
     double recall = TP / (double) P;
     double fone = 2 * precision * recall / (precision + recall);
 
+    // print to the console
     System.out.println("-------------------------------------------");
     System.out.println("Precision = " + precision);
     System.out.println("Recall = " + recall);
@@ -57,6 +77,11 @@ public class EvaluationAnnotator extends JCasAnnotator_ImplBase {
     System.out.println("-------------------------------------------");
   }
 
+  /**
+   * Get the ground truth set.
+   * 
+   * @return the ground truth set
+   */
   private Set<String> getGoldSet() {
     String[] lines = mGoldContent.split("\n");
     Set<String> goldSet = new HashSet<String>();
@@ -67,6 +92,12 @@ public class EvaluationAnnotator extends JCasAnnotator_ImplBase {
     return goldSet;
   }
 
+  /**
+   * Get the system's result set.
+   * 
+   * @param aJCas the JCas object
+   * @return the system's result set
+   */
   private Set<String> getMySet(JCas aJCas) {
     Set<String> mySet = new HashSet<String>();
     Iterator<?> NameEntityIter = aJCas.getAnnotationIndex(NameEntity.type).iterator();

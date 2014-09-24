@@ -21,15 +21,24 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
 /**
+ * An annotator that discovers Gene Name Entity in the document text. This use
+ * Stanford NLP and annotate the consecutive nouns.
  * 
  * @author Fei Xia
  *
  */
 public class BSNameEntityAnnotator extends JCasAnnotator_ImplBase {
 
+  /**
+   * Annotate to find out the Gene Name Entity. This use Stanford NLP and detect nouns. All 
+   * nouns that are consecutive will be viewed as gene name entity.
+   * 
+   * @param aJCas the JCas object. 
+   * 
+   * @see org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
+   */
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
-    // TODO Auto-generated method stub
     FSIndex<?> SentenceIndex = aJCas.getAnnotationIndex(Sentence.type);
     Iterator<?> SentenceIter = SentenceIndex.iterator();
 
@@ -39,6 +48,7 @@ public class BSNameEntityAnnotator extends JCasAnnotator_ImplBase {
     StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 
     int num = 0;
+    // iterate over all sentences
     while (SentenceIter.hasNext()) {
       num++;
       if (num % 500 == 0) {
@@ -48,6 +58,7 @@ public class BSNameEntityAnnotator extends JCasAnnotator_ImplBase {
       Sentence sentence = (Sentence) SentenceIter.next();
       String text = sentence.getCoveredText();
 
+      // use stanford nlp to do annotation
       Annotation document = new Annotation(text);
       pipeline.annotate(document);
       List<CoreMap> sens = document.get(SentencesAnnotation.class);
@@ -70,18 +81,27 @@ public class BSNameEntityAnnotator extends JCasAnnotator_ImplBase {
     }
   }
 
+  /**
+   * Calculate and add name entity annotation to JCas object.
+   * 
+   * @param sentence the sentence that are currently annotated.
+   * @param candidate a list of objects that can be recognized as name entity when combined
+   * @param aJCas the JCas object.
+   */
   private void addField(Sentence sentence, List<CoreLabel> candidate, JCas aJCas) {
     NameEntity annot = new NameEntity(aJCas);
 
     String text = sentence.getCoveredText();
     int begin = candidate.get(0).beginPosition();
     int end = candidate.get(candidate.size() - 1).endPosition();
+    
+    // calculate the begin-offset and end-offset
     String Bprev = text.substring(0, begin);
     String Eprev = text.substring(0, end - 1);
-
     int begin_offset = Bprev.replaceAll("\\s+", "").length();
     int end_offset = Eprev.replaceAll("\\s+", "").length();
 
+    // add to aJCas
     annot.setBegin(begin + sentence.getBegin());
     annot.setEnd(end + sentence.getBegin());
     annot.setBoffset(begin_offset);
