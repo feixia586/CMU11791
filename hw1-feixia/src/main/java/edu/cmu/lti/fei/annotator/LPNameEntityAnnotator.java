@@ -13,7 +13,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import com.aliasi.chunk.Chunk;
 import com.aliasi.chunk.Chunker;
-import com.aliasi.chunk.Chunking;
 import com.aliasi.util.AbstractExternalizable;
 
 import edu.cmu.lti.fei.type.NameEntity;
@@ -23,18 +22,18 @@ public class LPNameEntityAnnotator extends JCasAnnotator_ImplBase {
 
   private String mModelPath;
 
-  private Chunker chunker = null;
+  private Chunker mChunker = null;
 
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
     mModelPath = (String) getContext().getConfigParameterValue("ModelPath");
     try {
-      chunker = (Chunker) AbstractExternalizable.readObject(new File(mModelPath));
+      mChunker = (Chunker) AbstractExternalizable.readObject(new File(mModelPath));
     } catch (Exception ex) {
       System.err.println("[Error] Reading Gene Tag Model Error!!!");
       System.exit(1);
     }
-  };
+  }
 
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
@@ -54,7 +53,7 @@ public class LPNameEntityAnnotator extends JCasAnnotator_ImplBase {
       Sentence sentence = (Sentence) SentenceIter.next();
       String text = sentence.getCoveredText();
 
-      Set<Chunk> chunkSet = chunker.chunk(text).chunkSet();
+      Set<Chunk> chunkSet = mChunker.chunk(text).chunkSet();
       for (Chunk chunk : chunkSet) {
         NameEntity annot = new NameEntity(aJCas);
 
