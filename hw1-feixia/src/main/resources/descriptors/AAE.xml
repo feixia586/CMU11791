@@ -9,8 +9,11 @@
     <delegateAnalysisEngine key="EntryAnnotator">
       <import name="descriptors.EntryAnnotator"/>
     </delegateAnalysisEngine>
-  <delegateAnalysisEngine key="LPNameEntityAnnotator">
-      <import name="descriptors.LPNameEntityAnnotator"/>
+  <delegateAnalysisEngine key="EvaluationAnnotator">
+      <import name="descriptors.EvaluationAnnotator"/>
+    </delegateAnalysisEngine>
+  <delegateAnalysisEngine key="LPConfNameEntityAnnotator">
+      <import name="descriptors.LPConfNameEntityAnnotator"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -24,7 +27,8 @@
       <fixedFlow>
         <node>EntryAnnotator</node>
         <node>SentenceAnnotator</node>
-      <node>LPNameEntityAnnotator</node>
+      <node>LPConfNameEntityAnnotator</node>
+      <node>EvaluationAnnotator</node>
       </fixedFlow>
     </flowConstraints>
     <fsIndexCollection/>
