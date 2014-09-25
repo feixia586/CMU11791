@@ -19,7 +19,7 @@
       <nameValuePair>
         <name>outputFile</name>
         <value>
-          <string>src/main/resources/processed/sample.out</string>
+          <string>hw1-feixia.out</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
