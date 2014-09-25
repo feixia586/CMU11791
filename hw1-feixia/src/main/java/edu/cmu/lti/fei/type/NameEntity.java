@@ -10,8 +10,8 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Wed Sep 24 14:07:58 EDT 2014
- * XML source: /home/fei/Projects/java_workspace/CMU11791/hw1-feixia/src/main/resources/descriptors/TypeSystemDescriptor.xml
+ * Updated by JCasGen Wed Sep 24 22:23:40 EDT 2014
+ * XML source: /home/fei/Projects/java_workspace/CMU11791/hw1-feixia/src/main/resources/descriptors/AAE.xml
  * @generated */
 public class NameEntity extends Sentence {
   /** @generated
