@@ -29,14 +29,12 @@ import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CasConsumer_ImplBase;
 import org.apache.uima.collection.base_cpm.CasObjectProcessor;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceProcessException;
 import org.apache.uima.util.ProcessTrace;
 
 import edu.cmu.lti.fei.type.NameEntity;
-import edu.cmu.lti.fei.type.SourceDocumentInformation;
 
 /**
  * AnnotationPrinter prints to an output file the gene entity annotation in the CAS. <br>
