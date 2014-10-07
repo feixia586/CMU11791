@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
+<?xml version="1.0" encoding="UTF-8"?>
+<typeSystemDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <name>deiis_types</name>
   <description/>
   <version>1.0</version>
@@ -7,7 +8,7 @@
     <typeDescription>
       <name>edu.cmu.deiis.types.Annotation</name>
       <description/>
-      <supertypeName>uima.tcas.Annotation</supertypeName>
+      <supertypeName>edu.cmu.deiis.types.Sentence</supertypeName>
       <features>
         <featureDescription>
           <name>casProcessorId</name>
@@ -22,59 +23,14 @@
       </features>
     </typeDescription>
     <typeDescription>
-      <name>edu.cmu.deiis.types.Token</name>
+      <name>edu.cmu.deiis.types.Sentence</name>
       <description/>
-      <supertypeName>edu.cmu.deiis.types.Annotation</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>edu.cmu.deiis.types.NGram</name>
-      <description/>
-      <supertypeName>edu.cmu.deiis.types.Annotation</supertypeName>
+      <supertypeName>uima.tcas.Annotation</supertypeName>
       <features>
         <featureDescription>
-          <name>elements</name>
-          <description/>
-          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
-          <elementType>edu.cmu.deiis.types.Annotation</elementType>
-        </featureDescription>
-        <featureDescription>
-          <name>elementType</name>
+          <name>identifier</name>
           <description/>
           <rangeTypeName>uima.cas.String</rangeTypeName>
-        </featureDescription>
-      </features>
-    </typeDescription>
-    <typeDescription>
-      <name>edu.cmu.deiis.types.Answer</name>
-      <description/>
-      <supertypeName>edu.cmu.deiis.types.Annotation</supertypeName>
-      <features>
-        <featureDescription>
-          <name>isCorrect</name>
-          <description/>
-          <rangeTypeName>uima.cas.Boolean</rangeTypeName>
-        </featureDescription>
-      </features>
-    </typeDescription>
-    <typeDescription>
-      <name>edu.cmu.deiis.types.Question</name>
-      <description/>
-      <supertypeName>edu.cmu.deiis.types.Annotation</supertypeName>
-    </typeDescription>
-    <typeDescription>
-      <name>edu.cmu.deiis.types.AnswerScore</name>
-      <description/>
-      <supertypeName>edu.cmu.deiis.types.Annotation</supertypeName>
-      <features>
-        <featureDescription>
-          <name>score</name>
-          <description/>
-          <rangeTypeName>uima.cas.Double</rangeTypeName>
-        </featureDescription>
-        <featureDescription>
-          <name>answer</name>
-          <description/>
-          <rangeTypeName>edu.cmu.deiis.types.Answer</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>

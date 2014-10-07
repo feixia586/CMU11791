@@ -13,9 +13,9 @@ import org.apache.uima.cas.impl.FeatureImpl;
 import org.apache.uima.cas.Feature;
 
 /** 
- * Updated by JCasGen Wed Sep 11 13:44:28 EDT 2013
+ * Updated by JCasGen Tue Oct 07 15:55:11 EDT 2014
  * @generated */
-public class Annotation_Type extends org.apache.uima.jcas.tcas.Annotation_Type {
+public class Annotation_Type extends Sentence_Type {
   /** @generated */
   @Override
   protected FSGenerator getFSGenerator() {return fsGenerator;}
