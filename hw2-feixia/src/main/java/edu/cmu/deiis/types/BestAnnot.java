@@ -10,7 +10,7 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Wed Oct 08 13:10:23 EDT 2014
+ * Updated by JCasGen Wed Oct 08 13:43:04 EDT 2014
  * XML source: /home/fei/Projects/java_workspace/CMU11791/hw2-feixia/src/main/resources/descriptors/analysis_engine/AAE.xml
  * @generated */
 public class BestAnnot extends Annotation {
