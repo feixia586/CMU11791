@@ -10,8 +10,8 @@ import org.apache.uima.jcas.cas.TOP_Type;
 
 
 /** 
- * Updated by JCasGen Tue Oct 07 15:55:11 EDT 2014
- * XML source: /home/fei/Projects/java_workspace/CMU11791/hw2-feixia/src/main/resources/descriptors/collection_reader/FileSystemCollectionReader.xml
+ * Updated by JCasGen Tue Oct 07 17:50:58 EDT 2014
+ * XML source: /home/fei/Projects/java_workspace/CMU11791/hw2-feixia/src/main/resources/descriptors/analysis_engine/AAE.xml
  * @generated */
 public class Annotation extends Sentence {
   /** @generated
