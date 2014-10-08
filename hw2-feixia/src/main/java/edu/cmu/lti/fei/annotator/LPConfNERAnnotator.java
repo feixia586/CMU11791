@@ -16,6 +16,7 @@ import com.aliasi.util.AbstractExternalizable;
 
 import edu.cmu.deiis.types.Annotation;
 import edu.cmu.deiis.types.Sentence;
+import edu.cmu.lti.fei.util.CasProcessID;
 
 
 /**
@@ -108,8 +109,8 @@ public class LPConfNERAnnotator extends JCasAnnotator_ImplBase {
         annot.setBegin(sentence.getBegin() + begin);
         annot.setEnd(sentence.getBegin() + end);
         annot.setIdentifier(sentence.getIdentifier());
-        annot.setCasProcessorId("LPConf");
-        annot.setConfidence((float)conf);
+        annot.setCasProcessorId(CasProcessID.LPCONF);
+        annot.setConfidence((float)1.0);
         annot.addToIndexes();
       }
     }

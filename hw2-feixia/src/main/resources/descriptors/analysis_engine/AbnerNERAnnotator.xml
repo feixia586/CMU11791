@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-  <primitive>false</primitive>  
-  <delegateAnalysisEngineSpecifiers>
-    <delegateAnalysisEngine key="VotingAnnotator">
-      <import name="descriptors.analysis_engine.VotingAnnotator"/>
-    </delegateAnalysisEngine>
-  <delegateAnalysisEngine key="LPConfNERAnnotator">
-      <import name="descriptors.analysis_engine.LPConfNERAnnotator"/>
-    </delegateAnalysisEngine>
-  </delegateAnalysisEngineSpecifiers>
+  <primitive>true</primitive>  <annotatorImplementationName>edu.cmu.lti.fei.annotator.AbnerNERAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
-    <name>AAE</name>
+    <name>AbnerNERAnnotator</name>
     <description/>
     <version>1.0</version>
     <vendor/>
-    <configurationParameters searchStrategy="language_fallback"/>
+    <configurationParameters/>
     <configurationParameterSettings/>
-    <flowConstraints>
-      <fixedFlow>
-        <node>LPConfNERAnnotator</node>
-      <node>VotingAnnotator</node>
-      </fixedFlow>
-    </flowConstraints>
+    <typeSystemDescription>
+      <imports>
+        <import name="descriptors.deiis_types"/>
+      </imports>
+    </typeSystemDescription>
+    <typePriorities/>
     <fsIndexCollection/>
     <capabilities>
       <capability>

@@ -34,5 +34,10 @@
         </featureDescription>
       </features>
     </typeDescription>
+  <typeDescription>
+      <name>edu.cmu.deiis.types.BestAnnot</name>
+      <description/>
+      <supertypeName>edu.cmu.deiis.types.Annotation</supertypeName>
+    </typeDescription>
   </types>
 </typeSystemDescription>

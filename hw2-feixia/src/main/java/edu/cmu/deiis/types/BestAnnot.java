@@ -1,25 +1,24 @@
 
 
-/* First created by JCasGen Tue Oct 07 15:52:34 EDT 2014 */
+/* First created by JCasGen Wed Oct 08 04:27:26 EDT 2014 */
 package edu.cmu.deiis.types;
 
 import org.apache.uima.jcas.JCas; 
 import org.apache.uima.jcas.JCasRegistry;
 import org.apache.uima.jcas.cas.TOP_Type;
 
-import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
  * Updated by JCasGen Wed Oct 08 13:10:23 EDT 2014
  * XML source: /home/fei/Projects/java_workspace/CMU11791/hw2-feixia/src/main/resources/descriptors/analysis_engine/AAE.xml
  * @generated */
-public class Sentence extends Annotation {
+public class BestAnnot extends Annotation {
   /** @generated
    * @ordered 
    */
   @SuppressWarnings ("hiding")
-  public final static int typeIndexID = JCasRegistry.register(Sentence.class);
+  public final static int typeIndexID = JCasRegistry.register(BestAnnot.class);
   /** @generated
    * @ordered 
    */
@@ -33,14 +32,14 @@ public class Sentence extends Annotation {
  
   /** Never called.  Disable default constructor
    * @generated */
-  protected Sentence() {/* intentionally empty block */}
+  protected BestAnnot() {/* intentionally empty block */}
     
   /** Internal - constructor used by generator 
    * @generated
    * @param addr low level Feature Structure reference
    * @param type the type of this Feature Structure 
    */
-  public Sentence(int addr, TOP_Type type) {
+  public BestAnnot(int addr, TOP_Type type) {
     super(addr, type);
     readObject();
   }
@@ -48,7 +47,7 @@ public class Sentence extends Annotation {
   /** @generated
    * @param jcas JCas to which this Feature Structure belongs 
    */
-  public Sentence(JCas jcas) {
+  public BestAnnot(JCas jcas) {
     super(jcas);
     readObject();   
   } 
@@ -58,7 +57,7 @@ public class Sentence extends Annotation {
    * @param begin offset to the begin spot in the SofA
    * @param end offset to the end spot in the SofA 
   */  
-  public Sentence(JCas jcas, int begin, int end) {
+  public BestAnnot(JCas jcas, int begin, int end) {
     super(jcas);
     setBegin(begin);
     setEnd(end);
@@ -74,28 +73,6 @@ public class Sentence extends Annotation {
    */
   private void readObject() {/*default - does nothing empty block */}
      
- 
-    
-  //*--------------*
-  //* Feature: identifier
-
-  /** getter for identifier - gets 
-   * @generated
-   * @return value of the feature 
-   */
-  public String getIdentifier() {
-    if (Sentence_Type.featOkTst && ((Sentence_Type)jcasType).casFeat_identifier == null)
-      jcasType.jcas.throwFeatMissing("identifier", "edu.cmu.deiis.types.Sentence");
-    return jcasType.ll_cas.ll_getStringValue(addr, ((Sentence_Type)jcasType).casFeatCode_identifier);}
-    
-  /** setter for identifier - sets  
-   * @generated
-   * @param v value to set into the feature 
-   */
-  public void setIdentifier(String v) {
-    if (Sentence_Type.featOkTst && ((Sentence_Type)jcasType).casFeat_identifier == null)
-      jcasType.jcas.throwFeatMissing("identifier", "edu.cmu.deiis.types.Sentence");
-    jcasType.ll_cas.ll_setStringValue(addr, ((Sentence_Type)jcasType).casFeatCode_identifier, v);}    
-  }
+}
 
     

@@ -22,7 +22,9 @@ package edu.cmu.lti.fei.consumer;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -35,26 +37,31 @@ import org.apache.uima.resource.ResourceProcessException;
 import org.apache.uima.util.ProcessTrace;
 
 import edu.cmu.deiis.types.Annotation;
+import edu.cmu.deiis.types.BestAnnot;
 import edu.cmu.deiis.types.Sentence;
+import edu.cmu.lti.fei.util.CasProcessID;
+import edu.cmu.lti.fei.util.Evaluation;
+import edu.cmu.lti.fei.util.FileOp;
 
 /**
  * AnnotationPrinter prints to an output file the gene entity annotation in the CAS. <br>
  * Parameters needed by the AnnotationPrinter are
  * <ol>
- * <li> "outputFile" : file to which the output files should be written.</li>
+ * <li>"outputFile" : file to which the output files should be written.</li>
  * </ol>
  * <br>
- * These parameters are set in the initialize method to the values specified in the descriptor file.
- * <br>
+ * These parameters are set in the initialize method to the values specified in the descriptor file. <br>
  * These may also be set by the application by using the setConfigParameterValue methods.
  * 
  * 
  */
 
 public class AnnotationConsumer extends CasConsumer_ImplBase implements CasObjectProcessor {
-  File outFile;
+  String oPath;
 
-  FileWriter fileWriter;
+  String evalDataPath;
+
+  StringBuilder sb;
 
   public AnnotationConsumer() {
   }
@@ -68,26 +75,26 @@ public class AnnotationConsumer extends CasConsumer_ImplBase implements CasObjec
   public void initialize() throws ResourceInitializationException {
 
     // extract configuration parameter settings
-    String oPath = (String) getUimaContext().getConfigParameterValue("outputFile");
+    oPath = (String) getUimaContext().getConfigParameterValue("outputFile");
 
     // Output file should be specified in the descriptor
     if (oPath == null) {
       throw new ResourceInitializationException(
               ResourceInitializationException.CONFIG_SETTING_ABSENT, new Object[] { "outputFile" });
     }
+
     // If specified output directory does not exist, try to create it
-    outFile = new File(oPath.trim());
+    File outFile = new File(oPath.trim());
     if (outFile.getParentFile() != null && !outFile.getParentFile().exists()) {
       if (!outFile.getParentFile().mkdirs())
         throw new ResourceInitializationException(
                 ResourceInitializationException.RESOURCE_DATA_NOT_VALID, new Object[] { oPath,
                     "outputFile" });
     }
-    try {
-      fileWriter = new FileWriter(outFile);
-    } catch (IOException e) {
-      throw new ResourceInitializationException(e);
-    }
+
+    evalDataPath = (String) getUimaContext().getConfigParameterValue("goldDataFile");
+
+    sb = new StringBuilder();
   }
 
   /**
@@ -114,31 +121,29 @@ public class AnnotationConsumer extends CasConsumer_ImplBase implements CasObjec
     String line = jcas.getDocumentText();
     Sentence sens = (Sentence) jcas.getAnnotationIndex(Sentence.type).iterator().next();
 
-    // iterate and print annotations
-    Iterator<?> AnnotationIter = jcas.getAnnotationIndex(Annotation.type).iterator();
-    while (AnnotationIter.hasNext()) {
-      Annotation annotation = (Annotation) AnnotationIter.next();
+    Iterator<?> BestAnnotIter = jcas.getAnnotationIndex(BestAnnot.type).iterator();
+    while (BestAnnotIter.hasNext()) {
+      BestAnnot bestAnnot = (BestAnnot) BestAnnotIter.next();
+      if (bestAnnot == null) {
+        return;
+      }
 
-      String Bprev = line.substring(sens.getBegin(), annotation.getBegin());
-      String Eprev = line.substring(sens.getBegin(), annotation.getEnd() - 1);
+      String Bprev = line.substring(sens.getBegin(), bestAnnot.getBegin());
+      String Eprev = line.substring(sens.getBegin(), bestAnnot.getEnd() - 1);
 
       int boffset = Bprev.replaceAll("\\s+", "").length();
       int eoffset = Eprev.replaceAll("\\s+", "").length();
 
-      String identifier = annotation.getIdentifier();
+      String identifier = bestAnnot.getIdentifier();
 
       // get the text that is enclosed within the annotation in the CAS
-      String text = annotation.getCoveredText();
-      
-      try {
-        fileWriter.write(identifier + "|" + boffset + " " + eoffset + "|" + text + "\n");
-        fileWriter.flush();
-      } catch (IOException e) {
-        throw new ResourceProcessException(e);
-      }
+      String text = bestAnnot.getCoveredText();
+
+      sb.append(identifier + "|" + boffset + " " + eoffset + "|" + text + "\n");
     }
+
   }
-  
+
   /**
    * Called when a batch of processing is completed.
    * 
@@ -170,42 +175,13 @@ public class AnnotationConsumer extends CasConsumer_ImplBase implements CasObjec
    */
   public void collectionProcessComplete(ProcessTrace aTrace) throws ResourceProcessException,
           IOException {
-    if (fileWriter != null) {
-      fileWriter.close();
-    }
-  }
+    FileOp.writeToFile(oPath, sb.toString());
 
-  /**
-   * Reconfigures the parameters of this Consumer. <br>
-   * This is used in conjunction with the setConfigurationParameterValue to set the configuration
-   * parameter values to values other than the ones specified in the descriptor.
-   * 
-   * @throws ResourceConfigurationException
-   *           if the configuration parameter settings are invalid
-   * 
-   * @see org.apache.uima.resource.ConfigurableResource#reconfigure()
-   */
-  public void reconfigure() throws ResourceConfigurationException {
-    super.reconfigure();
-    // extract configuration parameter settings
-    String oPath = (String) getUimaContext().getConfigParameterValue("outputFile");
-    File oFile = new File(oPath.trim());
-    // if output file has changed, close exiting file and open new
-    if (!oFile.equals(this.outFile)) {
-      this.outFile = oFile;
-      try {
-        fileWriter.close();
-
-        // If specified output directory does not exist, try to create it
-        if (oFile.getParentFile() != null && !oFile.getParentFile().exists()) {
-          if (!oFile.getParentFile().mkdirs())
-            throw new ResourceConfigurationException(
-                    ResourceInitializationException.RESOURCE_DATA_NOT_VALID, new Object[] { oPath,
-                        "outputFile" });
-        }
-        fileWriter = new FileWriter(oFile);
-      } catch (IOException e) {
-        throw new ResourceConfigurationException();
+    if (evalDataPath != null && evalDataPath.trim().length() != 0) {
+      File theFile = new File(evalDataPath.trim());
+      if (theFile.exists() && !theFile.isDirectory()) {
+        Evaluation eval = new Evaluation(sb.toString(), FileOp.readFromFile(evalDataPath.trim()));
+        eval.evaluate();
       }
     }
   }
@@ -216,13 +192,5 @@ public class AnnotationConsumer extends CasConsumer_ImplBase implements CasObjec
    * @see org.apache.uima.resource.Resource#destroy()
    */
   public void destroy() {
-    if (fileWriter != null) {
-      try {
-        fileWriter.close();
-      } catch (IOException e) {
-        // ignore IOException on destroy
-      }
-    }
   }
-
 }

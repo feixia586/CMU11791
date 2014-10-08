@@ -79,6 +79,16 @@
 			<artifactId>lingpipe</artifactId>
 			<version>4.1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>abner</groupId>
+			<artifactId>abner</artifactId>
+			<version>1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.33</version>
+		</dependency>
 	</dependencies>
 	<scm>
 		<connection>scm:git:git@github.com:feixia586/CMU11791.git</connection>
