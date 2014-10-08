@@ -27,12 +27,28 @@ import edu.cmu.deiis.types.Sentence;
 import edu.cmu.lti.fei.util.CasProcessID;
 import edu.cmu.lti.fei.util.FileOp;
 
+/**
+ * An annotator that discovers Gene Name Entity in the document text. This uses
+ * LingPipe tool and a dictionary to do the exact annotation. 
+ * 
+ * @author Fei Xia <feixia@cs.cmu.edu>
+ *
+ */
 public class LPDictExactNERAnnotator extends JCasAnnotator_ImplBase {
-  static final double CHUNK_SCORE = 1.0;
+  /**
+   * The chunk score
+   */
+  private static final double CHUNK_SCORE = 1.0;
 
-  String mDictPath;
+  /**
+   * The dictionary path
+   */
+  private String mDictPath;
 
 
+  /**
+   * The object of the ExactDictionaryChunker, used to do chunking
+   */
   ExactDictionaryChunker mChunker;
 
   /**
@@ -61,10 +77,18 @@ public class LPDictExactNERAnnotator extends JCasAnnotator_ImplBase {
     mChunker = new ExactDictionaryChunker(dict, tokenizerFactory, false, true);
   }
 
+  /**
+   * Annotate to find out the Gene Name Entity. This use LingPipe and a dictionary to do exact
+   * annotation. The confidence score of the annotation will be set to 1.0
+   * 
+   * @param aJCas the JCas object. 
+   * @see org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
+   */
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
     FSIndex<?> SentenceIndex = aJCas.getAnnotationIndex(Sentence.type);
     Iterator<?> SentenceIter = SentenceIndex.iterator();
+    // iterator over the sentence
     while (SentenceIter.hasNext()) {
       Sentence sentence = (Sentence) SentenceIter.next();
       String text = sentence.getCoveredText();
@@ -76,6 +100,7 @@ public class LPDictExactNERAnnotator extends JCasAnnotator_ImplBase {
         int begin = chunk.start();
         int end = chunk.end();
         
+        // add to index
         annot.setBegin(sentence.getBegin() + begin);
         annot.setEnd(sentence.getBegin() + end);
         annot.setIdentifier(sentence.getIdentifier());

@@ -16,12 +16,21 @@ import edu.cmu.deiis.types.Annotation;
 import edu.cmu.deiis.types.Sentence;
 import abner.Tagger;
 
+/**
+ * The Abner Annotator
+ * @author Fei Xia <feixia@cs.cmu.edu>
+ *
+ */
+
 public class AbnerNERAnnotator extends JCasAnnotator_ImplBase {
 
-  Tagger mTagger;
+  /**
+   * The Abner tagger
+   */
+  private Tagger mTagger;
 
   /**
-   * Perform initialization logic. Read the model and initialize the mChunker.
+   * Perform initialization logic. Initialize the mTagger.
    * 
    * @param aContext
    *          the UimaContext object
@@ -31,6 +40,12 @@ public class AbnerNERAnnotator extends JCasAnnotator_ImplBase {
     mTagger = new Tagger(Tagger.BIOCREATIVE);
   }
 
+  /**
+   * Annotate to find out the Gene Name Entity. This uses Abner library.
+   * 
+   * @param aJCas the JCas object. 
+   * @see org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
+   */
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
     FSIndex<?> SentenceIndex = aJCas.getAnnotationIndex(Sentence.type);
@@ -43,6 +58,7 @@ public class AbnerNERAnnotator extends JCasAnnotator_ImplBase {
         String text = sentence.getCoveredText();
         String tagRes = mTagger.tagABNER(text);
 
+        // try to find out the begin and end index from the ABNER tag result format
         String[] items = tagRes.split("  ");
         items[items.length - 1] = "XX|O";
         int count = 0;
@@ -70,6 +86,7 @@ public class AbnerNERAnnotator extends JCasAnnotator_ImplBase {
             end = text.indexOf(list.get(i), end) + list.get(i).length();
           }
 
+          // add to Index
           Annotation annot = new Annotation(aJCas);
           annot.setBegin(sentence.getBegin() + begin);
           annot.setEnd(sentence.getBegin() + end);

@@ -25,12 +25,28 @@ import edu.cmu.deiis.types.Sentence;
 import edu.cmu.lti.fei.util.CasProcessID;
 import edu.cmu.lti.fei.util.FileOp;
 
+/**
+ * An annotator that discovers Gene Name Entity in the document text. This uses
+ * LingPipe tool and a Dictionary to do the approximate annotation. 
+ * 
+ * @author Fei Xia <feixia@cs.cmu.edu>
+ *
+ */
 public class LPDictAppoxNERAnnotator extends JCasAnnotator_ImplBase {
-  String mDictPath;
+  /**
+   * The dictionary path
+   */
+  private String mDictPath;
 
-  float mMaxDistance;
+  /**
+   * The maximum distance of the approximation
+   */
+  private float mMaxDistance;
 
-  ApproxDictionaryChunker mChunker;
+  /**
+   * The object of ApproxDictionaryChunker, used to do chunk
+   */
+  private ApproxDictionaryChunker mChunker;
 
   /**
    * Perform initialization logic. Read the dict and initialize the mChunker.
@@ -47,9 +63,6 @@ public class LPDictAppoxNERAnnotator extends JCasAnnotator_ImplBase {
     String content = FileOp.readFromFile(mDictPath);
     String[] lines = content.split("\n");
     for (int i = 0; i < lines.length; ++i) {
-      if (i % 100 == 0) {
-        System.out.println(i);
-      }
       DictionaryEntry<String> entry = new DictionaryEntry<String>(lines[i], "GENE");
       dict.addEntry(entry);
     }
@@ -61,10 +74,19 @@ public class LPDictAppoxNERAnnotator extends JCasAnnotator_ImplBase {
     mChunker = new ApproxDictionaryChunker(dict, tokenizerFactory, editDistance, mMaxDistance);
   }
 
+  /**
+   * Annotate to find out the Gene Name Entity. This use LingPipe and a dictionary to do Approximate
+   * annotation. The confidence score of the annotation will be set to 1.0
+   * 
+   * @param aJCas the JCas object. 
+   * @see org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
+   */
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
     FSIndex<?> SentenceIndex = aJCas.getAnnotationIndex(Sentence.type);
     Iterator<?> SentenceIter = SentenceIndex.iterator();
+
+    // iterator over the sentences
     while (SentenceIter.hasNext()) {
       Sentence sentence = (Sentence) SentenceIter.next();
       String text = sentence.getCoveredText();
@@ -76,6 +98,7 @@ public class LPDictAppoxNERAnnotator extends JCasAnnotator_ImplBase {
         int begin = chunk.start();
         int end = chunk.end();
         
+        // add to index
         annot.setBegin(sentence.getBegin() + begin);
         annot.setEnd(sentence.getBegin() + end);
         annot.setIdentifier(sentence.getIdentifier());

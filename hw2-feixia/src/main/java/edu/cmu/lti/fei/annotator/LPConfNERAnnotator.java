@@ -28,6 +28,9 @@ import edu.cmu.lti.fei.util.CasProcessID;
  *
  */
 public class LPConfNERAnnotator extends JCasAnnotator_ImplBase {
+  /**
+   * The model file path
+   */
   private String mModelPath;
   
   /**
@@ -66,8 +69,10 @@ public class LPConfNERAnnotator extends JCasAnnotator_ImplBase {
 
   /**
    * Annotate to find out the Gene Name Entity. This use LingPipe and a pretrained model to do 
-   * annotation. Then the annotation with low confidence will be filtered out.
+   * annotation. Then the annotation with low confidence will be filtered out. The confidence score
+   * of accepted annotation will be set to 1.0
    * 
+   * @param aJCas the JCas object. 
    * @see org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
    */
   @Override

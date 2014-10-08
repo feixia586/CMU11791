@@ -44,10 +44,11 @@ import edu.cmu.lti.fei.util.Evaluation;
 import edu.cmu.lti.fei.util.FileOp;
 
 /**
- * AnnotationPrinter prints to an output file the gene entity annotation in the CAS. <br>
- * Parameters needed by the AnnotationPrinter are
+ * AnnotationConsumer prints to an output file the gene entity annotation in the CAS. <br>
+ * Parameters needed by the AnnotationConsumer are
  * <ol>
  * <li>"outputFile" : file to which the output files should be written.</li>
+ * <li>"goldDataFile": Optional.</li>
  * </ol>
  * <br>
  * These parameters are set in the initialize method to the values specified in the descriptor file. <br>

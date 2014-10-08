@@ -14,6 +14,11 @@ import edu.cmu.deiis.types.Annotation;
 import edu.cmu.deiis.types.BestAnnot;
 import edu.cmu.lti.fei.util.CasProcessID;
 
+/**
+ * Voting 
+ * @author Fei Xia <feixia@cs.cmu.edu>
+ *
+ */
 public class VotingAnnotator extends JCasAnnotator_ImplBase {
 
   @Override
