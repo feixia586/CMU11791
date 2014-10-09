@@ -60,7 +60,9 @@ public class LPConfNERAnnotator extends JCasAnnotator_ImplBase {
     mThreshold = (Float) getContext().getConfigParameterValue("Threshold");
 
     try {
-      mChunker = (ConfidenceChunker) AbstractExternalizable.readObject(new File(mModelPath));
+      // mChunker = (ConfidenceChunker) AbstractExternalizable.readObject(new File(mModelPath));
+      mChunker = (ConfidenceChunker) AbstractExternalizable.readResourceObject(
+              LPConfNERAnnotator.class, mModelPath);
     } catch (Exception ex) {
       System.err.println("[Error] Reading Gene Tag Model Error!!!");
       System.exit(1);

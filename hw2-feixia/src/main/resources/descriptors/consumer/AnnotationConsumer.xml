@@ -25,13 +25,7 @@
       <nameValuePair>
         <name>outputFile</name>
         <value>
-          <string>src/main/resources/data/myout.out</string>
-        </value>
-      </nameValuePair>
-    <nameValuePair>
-        <name>goldDataFile</name>
-        <value>
-          <string>src/main/resources/data/sample.out</string>
+          <string>hw2-feixia.out</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

@@ -19,7 +19,7 @@
       <nameValuePair>
         <name>DictPath</name>
         <value>
-          <string>src/main/resources/model/gene-dict.txt</string>
+          <string>model/gene-dict.txt</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

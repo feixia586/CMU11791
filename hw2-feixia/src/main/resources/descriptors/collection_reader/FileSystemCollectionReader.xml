@@ -19,7 +19,7 @@
       <nameValuePair>
         <name>InFilePath</name>
         <value>
-          <string>src/main/resources/data/sample.in</string>
+          <string>hw2.in</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>

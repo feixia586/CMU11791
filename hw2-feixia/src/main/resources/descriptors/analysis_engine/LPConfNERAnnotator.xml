@@ -31,7 +31,7 @@
       <nameValuePair>
         <name>ModelPath</name>
         <value>
-          <string>src/main/resources/model/ne-en-bio-genetag.HmmChunker</string>
+          <string>/model/ne-en-bio-genetag.HmmChunker</string>
         </value>
       </nameValuePair>
       <nameValuePair>

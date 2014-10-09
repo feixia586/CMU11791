@@ -64,9 +64,6 @@ public class LPDictExactNERAnnotator extends JCasAnnotator_ImplBase {
     String content = FileOp.readFromFile(mDictPath);
     String[] lines = content.split("\n");
     for (int i = 0; i < lines.length; ++i) {
-      if (i % 100 == 0) {
-        System.out.println(i);
-      }
       DictionaryEntry<String> entry = new DictionaryEntry<String>(lines[i], "GENE", CHUNK_SCORE);
       dict.addEntry(entry);
     }
