@@ -1,5 +1,8 @@
 package edu.cmu.lti.fei.annotator;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -12,20 +15,15 @@ import org.apache.uima.resource.ResourceInitializationException;
 
 import com.aliasi.chunk.Chunk;
 import com.aliasi.chunk.Chunking;
-import com.aliasi.dict.ApproxDictionaryChunker;
 import com.aliasi.dict.DictionaryEntry;
 import com.aliasi.dict.ExactDictionaryChunker;
 import com.aliasi.dict.MapDictionary;
-import com.aliasi.dict.TrieDictionary;
-import com.aliasi.spell.FixedWeightEditDistance;
-import com.aliasi.spell.WeightedEditDistance;
 import com.aliasi.tokenizer.IndoEuropeanTokenizerFactory;
 import com.aliasi.tokenizer.TokenizerFactory;
 
 import edu.cmu.deiis.types.Annotation;
 import edu.cmu.deiis.types.Sentence;
 import edu.cmu.lti.fei.util.CasProcessID;
-import edu.cmu.lti.fei.util.FileOp;
 
 /**
  * An annotator that discovers Gene Name Entity in the document text. This uses LingPipe tool and a
@@ -61,7 +59,7 @@ public class LPDictExactNERAnnotator extends JCasAnnotator_ImplBase {
     mDictPath = (String) getContext().getConfigParameterValue("DictPath");
     MapDictionary<String> dict = new MapDictionary<String>();
 
-    String content = FileOp.readFromFile(mDictPath);
+    String content = getFileAsStream(mDictPath);
     String[] lines = content.split("\n");
     for (int i = 0; i < lines.length; ++i) {
       DictionaryEntry<String> entry = new DictionaryEntry<String>(lines[i], "GENE", CHUNK_SCORE);
@@ -104,6 +102,39 @@ public class LPDictExactNERAnnotator extends JCasAnnotator_ImplBase {
       annot.setConfidence((float) chunk.score()); // This is actually 1.0
       annot.addToIndexes();
     }
+  }
+
+  /**
+   * Read file through stream LPDictExactNERAnnotator
+   * 
+   * @param filePath
+   *          the file path
+   * @return the string of the file
+   * @throws ResourceInitializationException
+   */
+  private String getFileAsStream(String filePath) throws ResourceInitializationException {
+    StringBuilder sb = new StringBuilder();
+    try {
+      InputStream is = LPDictExactNERAnnotator.class.getClassLoader().getResourceAsStream(filePath);
+
+      BufferedReader br = new BufferedReader(new InputStreamReader(is, "utf-8"));
+
+      String line = br.readLine();
+      while (line != null) {
+        sb.append(line);
+        sb.append("\n");
+        line = br.readLine();
+      }
+      br.close();
+    } catch (Exception ex) {
+      System.out.println("[Error]: Look Below.");
+      ex.printStackTrace();
+      System.out.println("[Error]: Look Above.");
+      throw new ResourceInitializationException();
+    }
+
+    String content = sb.toString();
+    return content;
   }
 
 }

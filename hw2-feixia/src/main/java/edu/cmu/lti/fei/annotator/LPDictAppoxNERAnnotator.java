@@ -1,5 +1,8 @@
 package edu.cmu.lti.fei.annotator;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -60,7 +63,7 @@ public class LPDictAppoxNERAnnotator extends JCasAnnotator_ImplBase {
     mMaxDistance = (Float) getContext().getConfigParameterValue("MaxDistance");
     TrieDictionary<String> dict = new TrieDictionary<String>();
 
-    String content = FileOp.readFromFile(mDictPath);
+    String content = getFileAsStream(mDictPath);
     String[] lines = content.split("\n");
     for (int i = 0; i < lines.length; ++i) {
       DictionaryEntry<String> entry = new DictionaryEntry<String>(lines[i], "GENE");
@@ -107,4 +110,36 @@ public class LPDictAppoxNERAnnotator extends JCasAnnotator_ImplBase {
     }
   }
 
+  /**
+   * Read file through stream for LPDictAppoxNERAnnotator
+   * 
+   * @param filePath
+   *          the file path
+   * @return the string of the file
+   * @throws ResourceInitializationException
+   */
+  private String getFileAsStream(String filePath) throws ResourceInitializationException {
+    StringBuilder sb = new StringBuilder();
+    try {
+      InputStream is = LPDictAppoxNERAnnotator.class.getClassLoader().getResourceAsStream(filePath);
+
+      BufferedReader br = new BufferedReader(new InputStreamReader(is, "utf-8"));
+
+      String line = br.readLine();
+      while (line != null) {
+        sb.append(line);
+        sb.append("\n");
+        line = br.readLine();
+      }
+      br.close();
+    } catch (Exception ex) {
+      System.out.println("[Error]: Look Below.");
+      ex.printStackTrace();
+      System.out.println("[Error]: Look Above.");
+      throw new ResourceInitializationException();
+    }
+
+    String content = sb.toString();
+    return content;
+  }
 }

@@ -25,13 +25,13 @@
       <nameValuePair>
         <name>DictPath</name>
         <value>
-          <string>src/main/resources/model/gene-dict.txt</string>
+          <string>model/gene-dict.txt</string>
         </value>
       </nameValuePair>
       <nameValuePair>
         <name>MaxDistance</name>
         <value>
-          <float>0.0</float>
+          <float>1.0</float>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
