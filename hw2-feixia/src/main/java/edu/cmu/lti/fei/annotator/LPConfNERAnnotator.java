@@ -18,11 +18,10 @@ import edu.cmu.deiis.types.Annotation;
 import edu.cmu.deiis.types.Sentence;
 import edu.cmu.lti.fei.util.CasProcessID;
 
-
 /**
- * An annotator that discovers Gene Name Entity in the document text. This uses
- * LingPipe tool and a pretrained model to do the annotation. It will filter the 
- * results according the confidence threshold.
+ * An annotator that discovers Gene Name Entity in the document text. This uses LingPipe tool and a
+ * pretrained model to do the annotation. It will filter the results according the confidence
+ * threshold.
  * 
  * @author Fei Xia <feixia@cs.cmu.edu>
  *
@@ -32,12 +31,12 @@ public class LPConfNERAnnotator extends JCasAnnotator_ImplBase {
    * The model file path
    */
   private String mModelPath;
-  
+
   /**
    * The number of best matches in a sentence
    */
   private Integer mMAX_N_BEST_CHUNKS;
-  
+
   /**
    * The confidence threshold
    */
@@ -51,7 +50,8 @@ public class LPConfNERAnnotator extends JCasAnnotator_ImplBase {
   /**
    * Perform initialization logic. Read the model and initialize the mChunker.
    * 
-   * @param aContext the UimaContext object
+   * @param aContext
+   *          the UimaContext object
    */
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
@@ -68,11 +68,12 @@ public class LPConfNERAnnotator extends JCasAnnotator_ImplBase {
   }
 
   /**
-   * Annotate to find out the Gene Name Entity. This use LingPipe and a pretrained model to do 
+   * Annotate to find out the Gene Name Entity. This use LingPipe and a pretrained model to do
    * annotation. Then the annotation with low confidence will be filtered out. The confidence score
    * of accepted annotation will be set to 1.0
    * 
-   * @param aJCas the JCas object. 
+   * @param aJCas
+   *          the JCas object.
    * @see org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
    */
   @Override
@@ -80,44 +81,35 @@ public class LPConfNERAnnotator extends JCasAnnotator_ImplBase {
     FSIndex<?> SentenceIndex = aJCas.getAnnotationIndex(Sentence.type);
     Iterator<?> SentenceIter = SentenceIndex.iterator();
 
-    // iterate over all sentences
-    int num = 0;
-    while (SentenceIter.hasNext()) {
-      num++;
-      if (num % 500 == 0) {
-        System.out.println("Working: " + num);
+    Sentence sentence = (Sentence) SentenceIter.next();
+    String text = sentence.getCoveredText();
+    char[] cs = text.toCharArray();
+
+    Iterator<Chunk> iter = mChunker.nBestChunks(cs, 0, cs.length, mMAX_N_BEST_CHUNKS);
+    while (iter.hasNext()) {
+      Annotation annot = new Annotation(aJCas);
+
+      Chunk chunk = iter.next();
+      if (!chunk.type().equals("GENE")) {
+        System.out.println(chunk.type());
       }
 
-      Sentence sentence = (Sentence) SentenceIter.next();
-      String text = sentence.getCoveredText();
-      char[] cs = text.toCharArray();
-
-      Iterator<Chunk> iter = mChunker.nBestChunks(cs, 0, cs.length, mMAX_N_BEST_CHUNKS);
-      while (iter.hasNext()) {
-        Annotation annot = new Annotation(aJCas);
-
-        Chunk chunk = iter.next();
-        if (!chunk.type().equals("GENE")) {
-          System.out.println(chunk.type());
-        }
-        
-        // check confidence and threshold
-        double conf = (double) Math.pow(2.0, chunk.score());
-        if (conf < mThreshold) {
-          continue;
-        }
-
-        int begin = chunk.start();
-        int end = chunk.end();
-
-        // add to aJCas
-        annot.setBegin(sentence.getBegin() + begin);
-        annot.setEnd(sentence.getBegin() + end);
-        annot.setIdentifier(sentence.getIdentifier());
-        annot.setCasProcessorId(CasProcessID.LPCONF);
-        annot.setConfidence((float)1.0);
-        annot.addToIndexes();
+      // check confidence and threshold
+      double conf = (double) Math.pow(2.0, chunk.score());
+      if (conf < mThreshold) {
+        continue;
       }
+
+      int begin = chunk.start();
+      int end = chunk.end();
+
+      // add to aJCas
+      annot.setBegin(sentence.getBegin() + begin);
+      annot.setEnd(sentence.getBegin() + end);
+      annot.setIdentifier(sentence.getIdentifier());
+      annot.setCasProcessorId(CasProcessID.LPCONF);
+      annot.setConfidence((float) 1.0);
+      annot.addToIndexes();
     }
   }
 

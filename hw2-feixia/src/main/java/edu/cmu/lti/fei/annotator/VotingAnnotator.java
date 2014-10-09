@@ -23,7 +23,6 @@ public class VotingAnnotator extends JCasAnnotator_ImplBase {
 
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
-    System.out.println("Voting...");
     Iterator<?> AnnotationIter = aJCas.getAnnotationIndex(Annotation.type).iterator();
 
     List<Annotation> lpConfAnnots = new ArrayList<Annotation>();
@@ -41,8 +40,8 @@ public class VotingAnnotator extends JCasAnnotator_ImplBase {
       }
     }
 
-    // List<Annotation> annotList = doVoting(lpConfAnnots, lpDictExactAnnots, abnerAnnots);
-    List<Annotation> annotList = takeOneVoting(lpConfAnnots, lpDictExactAnnots, abnerAnnots);
+    List<Annotation> annotList = doVoting(lpConfAnnots, lpDictExactAnnots, abnerAnnots);
+    //List<Annotation> annotList = takeOneVoting(lpConfAnnots, lpDictExactAnnots, abnerAnnots);
 
     for (Annotation annot : annotList) {
       BestAnnot bestAnnot = new BestAnnot(aJCas);
@@ -55,7 +54,7 @@ public class VotingAnnotator extends JCasAnnotator_ImplBase {
     }
   }
 
-  private List<Annotation> takeOneVoting(List<Annotation> lpConfAnnots,
+  public List<Annotation> takeOneVoting(List<Annotation> lpConfAnnots,
           List<Annotation> lpDictExactAnnots, List<Annotation> abnerAnnots) {
     List<Annotation> annots = new ArrayList<Annotation>();
     for (int i = 0; i < lpConfAnnots.size(); i++) {
@@ -80,8 +79,8 @@ public class VotingAnnotator extends JCasAnnotator_ImplBase {
       int lpConfBegin = lpConfAnnots.get(i).getBegin();
       int lpConfEnd = lpConfAnnots.get(i).getEnd();
       for (int j = 0; j < lpDictExactAnnots.size(); ++j) {
-        if (lpConfBegin <= lpDictExactAnnots.get(i).getBegin()
-                && lpConfEnd >= lpDictExactAnnots.get(i).getEnd()
+        if (lpConfBegin <= lpDictExactAnnots.get(j).getBegin()
+                && lpConfEnd >= lpDictExactAnnots.get(j).getEnd()
                 && !visited.contains(lpConfBegin + "-" + lpConfEnd)) {
           visited.add(lpConfBegin + "-" + lpConfEnd);
           annots.add(lpConfAnnots.get(i));
@@ -89,8 +88,8 @@ public class VotingAnnotator extends JCasAnnotator_ImplBase {
       }
 
       for (int j = 0; j < abnerAnnots.size(); ++j) {
-        if (lpConfBegin <= abnerAnnots.get(i).getBegin()
-                && lpConfEnd >= abnerAnnots.get(i).getEnd()
+        if (lpConfBegin <= abnerAnnots.get(j).getBegin()
+                && lpConfEnd >= abnerAnnots.get(j).getEnd()
                 && !visited.contains(lpConfBegin + "-" + lpConfEnd)) {
           visited.add(lpConfBegin + "-" + lpConfEnd);
           annots.add(lpConfAnnots.get(i));
@@ -103,8 +102,8 @@ public class VotingAnnotator extends JCasAnnotator_ImplBase {
       int lpDictExactBegin = lpDictExactAnnots.get(i).getBegin();
       int lpDictExactEnd = lpDictExactAnnots.get(i).getEnd();
       for (int j = 0; j < lpConfAnnots.size(); ++j) {
-        if (lpDictExactBegin <= lpConfAnnots.get(i).getBegin()
-                && lpDictExactEnd >= lpConfAnnots.get(i).getEnd()
+        if (lpDictExactBegin <= lpConfAnnots.get(j).getBegin()
+                && lpDictExactEnd >= lpConfAnnots.get(j).getEnd()
                 && !visited.contains(lpDictExactBegin + "-" + lpDictExactEnd)) {
           visited.add(lpDictExactBegin + "-" + lpDictExactEnd);
           annots.add(lpDictExactAnnots.get(i));
@@ -112,8 +111,8 @@ public class VotingAnnotator extends JCasAnnotator_ImplBase {
       }
 
       for (int j = 0; j < abnerAnnots.size(); ++j) {
-        if (lpDictExactBegin <= abnerAnnots.get(i).getBegin()
-                && lpDictExactEnd >= abnerAnnots.get(i).getEnd()
+        if (lpDictExactBegin <= abnerAnnots.get(j).getBegin()
+                && lpDictExactEnd >= abnerAnnots.get(j).getEnd()
                 && !visited.contains(lpDictExactBegin + "-" + lpDictExactEnd)) {
           visited.add(lpDictExactBegin + "-" + lpDictExactEnd);
           annots.add(lpDictExactAnnots.get(i));
@@ -126,8 +125,8 @@ public class VotingAnnotator extends JCasAnnotator_ImplBase {
       int abnerBegin = abnerAnnots.get(i).getBegin();
       int abnerEnd = abnerAnnots.get(i).getEnd();
       for (int j = 0; j < lpDictExactAnnots.size(); ++j) {
-        if (abnerBegin == lpDictExactAnnots.get(i).getBegin()
-                && abnerEnd == lpDictExactAnnots.get(i).getEnd()
+        if (abnerBegin == lpDictExactAnnots.get(j).getBegin()
+                && abnerEnd == lpDictExactAnnots.get(j).getEnd()
                 && !visited.contains(abnerBegin + "-" + abnerEnd)) {
           visited.add(abnerBegin + "-" + abnerEnd);
           annots.add(abnerAnnots.get(i));
@@ -135,8 +134,8 @@ public class VotingAnnotator extends JCasAnnotator_ImplBase {
       }
 
       for (int j = 0; j < lpConfAnnots.size(); ++j) {
-        if (abnerBegin == lpConfAnnots.get(i).getBegin()
-                && abnerEnd == lpConfAnnots.get(i).getEnd()
+        if (abnerBegin == lpConfAnnots.get(j).getBegin()
+                && abnerEnd == lpConfAnnots.get(j).getEnd()
                 && !visited.contains(abnerBegin + "-" + abnerBegin)) {
           visited.add(abnerAnnots + "-" + abnerEnd);
           annots.add(abnerAnnots.get(i));

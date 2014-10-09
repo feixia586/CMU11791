@@ -26,8 +26,8 @@ import edu.cmu.lti.fei.util.CasProcessID;
 import edu.cmu.lti.fei.util.FileOp;
 
 /**
- * An annotator that discovers Gene Name Entity in the document text. This uses
- * LingPipe tool and a Dictionary to do the approximate annotation. 
+ * An annotator that discovers Gene Name Entity in the document text. This uses LingPipe tool and a
+ * Dictionary to do the approximate annotation.
  * 
  * @author Fei Xia <feixia@cs.cmu.edu>
  *
@@ -78,7 +78,8 @@ public class LPDictAppoxNERAnnotator extends JCasAnnotator_ImplBase {
    * Annotate to find out the Gene Name Entity. This use LingPipe and a dictionary to do Approximate
    * annotation. The confidence score of the annotation will be set to 1.0
    * 
-   * @param aJCas the JCas object. 
+   * @param aJCas
+   *          the JCas object.
    * @see org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
    */
   @Override
@@ -86,26 +87,23 @@ public class LPDictAppoxNERAnnotator extends JCasAnnotator_ImplBase {
     FSIndex<?> SentenceIndex = aJCas.getAnnotationIndex(Sentence.type);
     Iterator<?> SentenceIter = SentenceIndex.iterator();
 
-    // iterator over the sentences
-    while (SentenceIter.hasNext()) {
-      Sentence sentence = (Sentence) SentenceIter.next();
-      String text = sentence.getCoveredText();
-      Chunking chunking = mChunker.chunk(text);
-      Set<Chunk> chunkSet = chunking.chunkSet();
-      for (Chunk chunk : chunkSet) {
-        Annotation annot = new Annotation(aJCas);
-        
-        int begin = chunk.start();
-        int end = chunk.end();
-        
-        // add to index
-        annot.setBegin(sentence.getBegin() + begin);
-        annot.setEnd(sentence.getBegin() + end);
-        annot.setIdentifier(sentence.getIdentifier());
-        annot.setCasProcessorId(CasProcessID.LPDICTAppox);
-        annot.setConfidence((float)1.0);
-        annot.addToIndexes();
-      }
+    Sentence sentence = (Sentence) SentenceIter.next();
+    String text = sentence.getCoveredText();
+    Chunking chunking = mChunker.chunk(text);
+    Set<Chunk> chunkSet = chunking.chunkSet();
+    for (Chunk chunk : chunkSet) {
+      Annotation annot = new Annotation(aJCas);
+
+      int begin = chunk.start();
+      int end = chunk.end();
+
+      // add to index
+      annot.setBegin(sentence.getBegin() + begin);
+      annot.setEnd(sentence.getBegin() + end);
+      annot.setIdentifier(sentence.getIdentifier());
+      annot.setCasProcessorId(CasProcessID.LPDICTAppox);
+      annot.setConfidence((float) 1.0);
+      annot.addToIndexes();
     }
   }
 

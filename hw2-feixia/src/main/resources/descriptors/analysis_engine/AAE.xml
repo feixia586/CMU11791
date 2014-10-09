@@ -12,6 +12,9 @@
     <delegateAnalysisEngine key="LPDictExactNERAnnotator">
       <import name="descriptors.analysis_engine.LPDictExactNERAnnotator"/>
     </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="AbnerNERAnnotator">
+      <import name="descriptors.analysis_engine.AbnerNERAnnotator"/>
+    </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
     <name>AAE</name>
@@ -24,6 +27,7 @@
       <fixedFlow>
         <node>LPConfNERAnnotator</node>
         <node>LPDictExactNERAnnotator</node>
+        <node>AbnerNERAnnotator</node>
         <node>VotingAnnotator</node>
       </fixedFlow>
     </flowConstraints>
