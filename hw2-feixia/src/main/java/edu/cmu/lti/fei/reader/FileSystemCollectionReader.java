@@ -19,19 +19,14 @@
 
 package edu.cmu.lti.fei.reader;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.collection.CollectionException;
 import org.apache.uima.collection.CollectionReader_ImplBase;
 import org.apache.uima.jcas.JCas;
-import org.apache.uima.jcas.tcas.DocumentAnnotation;
-import org.apache.uima.resource.ResourceConfigurationException;
 import org.apache.uima.resource.ResourceInitializationException;
-import org.apache.uima.util.FileUtils;
 import org.apache.uima.util.Progress;
 import org.apache.uima.util.ProgressImpl;
 
@@ -52,8 +47,7 @@ import edu.cmu.lti.fei.util.FileOp;
  */
 public class FileSystemCollectionReader extends CollectionReader_ImplBase {
   /**
-   * Name of configuration parameter that must be set to the path of a directory containing input
-   * files.
+   * Name of configuration parameter that must be set to the path of a Input file.
    */
   public static final String PARAM_INFILEPATH = "InFilePath";
   
@@ -84,8 +78,14 @@ public class FileSystemCollectionReader extends CollectionReader_ImplBase {
    */
   private String mLanguage;
   
+  /**
+   * The lines in the input file
+   */
   private String[] mLines;
   
+  /**
+   * the current index of line
+   */
   private int mCurrentIndex;
   
   /**
@@ -125,6 +125,7 @@ public class FileSystemCollectionReader extends CollectionReader_ImplBase {
     // put document in CAS
     jcas.setDocumentText(line);
     
+    // annotate to get the Sentence annotation
     Sentence annot = new Sentence(jcas);
     int idIdx = line.indexOf(' ');
     String identifier = line.substring(0, idIdx);

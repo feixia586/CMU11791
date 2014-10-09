@@ -15,12 +15,20 @@ import edu.cmu.deiis.types.BestAnnot;
 import edu.cmu.lti.fei.util.CasProcessID;
 
 /**
- * Voting 
+ * An annotator that does the voting. It will annotate the best begin and end index.
+ * 
  * @author Fei Xia <feixia@cs.cmu.edu>
  *
  */
 public class VotingAnnotator extends JCasAnnotator_ImplBase {
 
+  /**
+   * Process to try to find out the best annotation.
+   * 
+   * @param aJCas
+   *          the JCas object.
+   * @see org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
+   */
   @Override
   public void process(JCas aJCas) throws AnalysisEngineProcessException {
     Iterator<?> AnnotationIter = aJCas.getAnnotationIndex(Annotation.type).iterator();
@@ -40,9 +48,10 @@ public class VotingAnnotator extends JCasAnnotator_ImplBase {
       }
     }
 
+    // get the winning annotation list
     List<Annotation> annotList = doVoting(lpConfAnnots, lpDictExactAnnots, abnerAnnots);
-    //List<Annotation> annotList = takeOneVoting(lpConfAnnots, lpDictExactAnnots, abnerAnnots);
 
+    // add the annotation info to the BestAnnot
     for (Annotation annot : annotList) {
       BestAnnot bestAnnot = new BestAnnot(aJCas);
       bestAnnot.setBegin(annot.getBegin());
@@ -54,6 +63,7 @@ public class VotingAnnotator extends JCasAnnotator_ImplBase {
     }
   }
 
+  /*
   public List<Annotation> takeOneVoting(List<Annotation> lpConfAnnots,
           List<Annotation> lpDictExactAnnots, List<Annotation> abnerAnnots) {
     List<Annotation> annots = new ArrayList<Annotation>();
@@ -69,12 +79,22 @@ public class VotingAnnotator extends JCasAnnotator_ImplBase {
 
     return annots;
   }
+  */
 
-  public List<Annotation> doVoting(List<Annotation> lpConfAnnots,
+  /**
+   * Do the voting.
+   * 
+   * @param lpConfAnnots the LPConf annotations
+   * @param lpDictExactAnnots the LPDict annotations
+   * @param abnerAnnots the abner annotations
+   * @return a list of winning annotations
+   */
+  private List<Annotation> doVoting(List<Annotation> lpConfAnnots,
           List<Annotation> lpDictExactAnnots, List<Annotation> abnerAnnots) {
     List<Annotation> annots = new ArrayList<Annotation>();
     Set<String> visited = new HashSet<String>();
 
+    // checking from LPConf annotations
     for (int i = 0; i < lpConfAnnots.size(); ++i) {
       int lpConfBegin = lpConfAnnots.get(i).getBegin();
       int lpConfEnd = lpConfAnnots.get(i).getEnd();
@@ -98,6 +118,7 @@ public class VotingAnnotator extends JCasAnnotator_ImplBase {
 
     }
 
+    // checking from LPDict annotations
     for (int i = 0; i < lpDictExactAnnots.size(); ++i) {
       int lpDictExactBegin = lpDictExactAnnots.get(i).getBegin();
       int lpDictExactEnd = lpDictExactAnnots.get(i).getEnd();
@@ -121,6 +142,7 @@ public class VotingAnnotator extends JCasAnnotator_ImplBase {
 
     }
 
+    // checking from the abner annotations
     for (int i = 0; i < abnerAnnots.size(); ++i) {
       int abnerBegin = abnerAnnots.get(i).getBegin();
       int abnerEnd = abnerAnnots.get(i).getEnd();

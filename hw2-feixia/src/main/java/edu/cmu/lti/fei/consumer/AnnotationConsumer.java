@@ -48,7 +48,7 @@ import edu.cmu.lti.fei.util.FileOp;
  * Parameters needed by the AnnotationConsumer are
  * <ol>
  * <li>"outputFile" : file to which the output files should be written.</li>
- * <li>"goldDataFile": Optional.</li>
+ * <li>"goldDataFile": Optional. file of goldData, used to do evaluation</li>
  * </ol>
  * <br>
  * These parameters are set in the initialize method to the values specified in the descriptor file. <br>
@@ -58,10 +58,19 @@ import edu.cmu.lti.fei.util.FileOp;
  */
 
 public class AnnotationConsumer extends CasConsumer_ImplBase implements CasObjectProcessor {
+  /*
+   * output file path
+   */
   String oPath;
 
+  /*
+   * gold dataset file path
+   */
   String evalDataPath;
 
+  /*
+   * The StringBuilder used to concatenate the output string
+   */
   StringBuilder sb;
 
   public AnnotationConsumer() {
@@ -100,8 +109,8 @@ public class AnnotationConsumer extends CasConsumer_ImplBase implements CasObjec
 
   /**
    * Processes the CasContainer which was populated by the TextAnalysisEngines. <br>
-   * In this case, the CAS index is iterated over selected annotations and printed out into an
-   * output file
+   * In this case, the CAS index is iterated over selected annotations and append the 
+   * relevant information to StringBuilder sb
    * 
    * @param aCAS
    *          CasContainer which has been populated by the TAEs
@@ -164,7 +173,7 @@ public class AnnotationConsumer extends CasConsumer_ImplBase implements CasObjec
   }
 
   /**
-   * Called when the entire collection is completed.
+   * Called when the entire collection is completed. Write the string to file.
    * 
    * @param aTrace
    *          ProcessTrace object that will log events in this method.
@@ -178,6 +187,7 @@ public class AnnotationConsumer extends CasConsumer_ImplBase implements CasObjec
           IOException {
     FileOp.writeToFile(oPath, sb.toString());
 
+    // if evaluation path exists, do the evaluation
     if (evalDataPath != null && evalDataPath.trim().length() != 0) {
       File theFile = new File(evalDataPath.trim());
       if (theFile.exists() && !theFile.isDirectory()) {
