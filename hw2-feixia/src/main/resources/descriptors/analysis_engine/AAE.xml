@@ -6,14 +6,14 @@
     <delegateAnalysisEngine key="VotingAnnotator">
       <import name="descriptors.analysis_engine.VotingAnnotator"/>
     </delegateAnalysisEngine>
-  <delegateAnalysisEngine key="LPConfNERAnnotator">
+  <delegateAnalysisEngine key="AbnerNERAnnotator">
+      <import name="descriptors.analysis_engine.AbnerNERAnnotator"/>
+    </delegateAnalysisEngine>
+    <delegateAnalysisEngine key="LPConfNERAnnotator">
       <import name="descriptors.analysis_engine.LPConfNERAnnotator"/>
     </delegateAnalysisEngine>
     <delegateAnalysisEngine key="LPDictExactNERAnnotator">
       <import name="descriptors.analysis_engine.LPDictExactNERAnnotator"/>
-    </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="AbnerNERAnnotator">
-      <import name="descriptors.analysis_engine.AbnerNERAnnotator"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
