@@ -59,7 +59,7 @@ public class DocVecOps {
 
   public static String consOutStr(List<DocVec> relDocVecs, double mrr) {
     StringBuilder sb = new StringBuilder();
-    DecimalFormat df = new DecimalFormat("#.####");
+    DecimalFormat df = new DecimalFormat("0.0000");
     for (DocVec docVec : relDocVecs) {
       sb.append("cosine=" + df.format(docVec.getCosSim()) + "\t");
       sb.append("rank=" + docVec.getRank() + "\t");

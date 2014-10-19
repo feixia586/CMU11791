@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.print.Doc;
+import javax.wsdl.Output;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
@@ -111,6 +112,7 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
     }
     List<DocVec> relDocVecs = DocVecOps.getRelDocVecs(qid2DocVecs);
     Collections.sort(relDocVecs, new QidComparator());
+    outputAll(qid2DocVecs, qid2Query);
     
 
     // compute the metric:: mean reciprocal rank
@@ -122,7 +124,22 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
   }
 
   
-
+  public void outputAll(Map<Integer, List<DocVec>> qid2DocVecs, Map<Integer, DocVec> qid2Query) {
+    StringBuilder sb = new StringBuilder();
+    for (int qid : allqid) {
+      sb.append(qid2Query.get(qid).getDocText() + "\n");
+      List<DocVec> docVecList = qid2DocVecs.get(qid);
+      for (DocVec docVec : docVecList) {
+        sb.append("qid=" + docVec.getqid() + "\t");
+        sb.append("rel=" + docVec.getRel() + "\t");
+        sb.append("cos=" + docVec.getCosSim() + "\t");
+        sb.append("rank=" + docVec.getRank() + "\t");
+        sb.append(docVec.getDocText() + "\n");
+      }
+      sb.append("\n");
+    }
+    FileOp.writeToFile("analysis.txt", sb.toString());
+  }
   
 
 }
