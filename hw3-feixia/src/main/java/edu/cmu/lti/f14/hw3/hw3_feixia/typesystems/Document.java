@@ -12,7 +12,7 @@ import org.apache.uima.jcas.tcas.Annotation;
 
 
 /** 
- * Updated by JCasGen Sun Oct 19 12:46:50 EDT 2014
+ * Updated by JCasGen Mon Oct 20 10:51:48 EDT 2014
  * XML source: /home/fei/Projects/java_workspace/CMU11791/hw3-feixia/src/main/resources/descriptors/retrievalsystem/VectorSpaceRetrieval.xml
  * @generated */
 public class Document extends Annotation {

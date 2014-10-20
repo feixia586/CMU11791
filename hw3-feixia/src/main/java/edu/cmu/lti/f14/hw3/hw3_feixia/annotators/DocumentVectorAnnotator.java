@@ -57,12 +57,12 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
       stopSet.add(line);
     }
 
-    // TOKENIZER_FACTORY = IndoEuropeanTokenizerFactory.INSTANCE;
+     TOKENIZER_FACTORY = IndoEuropeanTokenizerFactory.INSTANCE;
     // TOKENIZER_FACTORY = new PorterStemmerTokenizerFactory(IndoEuropeanTokenizerFactory.INSTANCE);
 
     // TOKENIZER_FACTORY = new LowerCaseTokenizerFactory(IndoEuropeanTokenizerFactory.INSTANCE);
-     TOKENIZER_FACTORY = new StopTokenizerFactory(new
-     LowerCaseTokenizerFactory(IndoEuropeanTokenizerFactory.INSTANCE), stopSet);
+    // TOKENIZER_FACTORY = new StopTokenizerFactory(new
+    // LowerCaseTokenizerFactory(IndoEuropeanTokenizerFactory.INSTANCE), stopSet);
     // TOKENIZER_FACTORY = new PorterStemmerTokenizerFactory(new
     // LowerCaseTokenizerFactory(IndoEuropeanTokenizerFactory.INSTANCE));
 
