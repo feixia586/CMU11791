@@ -31,12 +31,28 @@ import edu.cmu.lti.f14.hw3.hw3_feixia.typesystems.Document;
 import edu.cmu.lti.f14.hw3.hw3_feixia.typesystems.Token;
 import edu.cmu.lti.f14.hw3.hw3_feixia.utils.Utils;
 
+/**
+ * Annotate the tokens and create the term frequency vector
+ * 
+ * @author Fei Xia <feixia@cs.cmu.edu>
+ * 
+ */
+
 public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
 
+  /**
+   * The tokenizer factory
+   */
   private TokenizerFactory TOKENIZER_FACTORY;
 
+  /**
+   * Stop words set
+   */
   private Set<String> stopSet;
 
+  /**
+   * Stop words file path
+   */
   private String stopFilePath;
 
   /**
@@ -51,13 +67,14 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
     stopFilePath = (String) getContext().getConfigParameterValue("stopFilePath");
     stopSet = new HashSet<String>();
 
+    // create the set of stop words
     String content = getFileAsStream(stopFilePath);
     String[] lines = content.split("\n");
     for (String line : lines) {
       stopSet.add(line);
     }
 
-     TOKENIZER_FACTORY = IndoEuropeanTokenizerFactory.INSTANCE;
+    TOKENIZER_FACTORY = IndoEuropeanTokenizerFactory.INSTANCE;
     // TOKENIZER_FACTORY = new PorterStemmerTokenizerFactory(IndoEuropeanTokenizerFactory.INSTANCE);
 
     // TOKENIZER_FACTORY = new LowerCaseTokenizerFactory(IndoEuropeanTokenizerFactory.INSTANCE);
@@ -68,6 +85,13 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
 
   }
 
+  /**
+   * Annotate to find the tokens and get the bag of words representation (the token frequency list).
+   * 
+   * @param jcas
+   *          the JCas object.
+   * @see org.apache.uima.analysis_component.JCasAnnotator_ImplBase#process(org.apache.uima.jcas.JCas)
+   */
   @Override
   public void process(JCas jcas) throws AnalysisEngineProcessException {
 
@@ -85,7 +109,7 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
    *
    * @param doc
    *          input text
-   * @return a list of tokens.
+   * @return a list of tokens in string
    */
   private List<String> tokenize0(String doc) {
     List<String> res = new ArrayList<String>();
@@ -96,37 +120,37 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
     return res;
   }
 
+  /**
+   * An advanced tokenizer, ultimately, it uses LingPipe tokenizer and can convert tokens to lower
+   * cases, remove stop words, stemming, etc.
+   * 
+   * @param doc
+   *          input text
+   * @return a list of tokens in string
+   */
   private List<String> tokenize1(String doc) {
     List<String> res = new ArrayList<String>();
     List<String> whiteList = new ArrayList<String>();
 
     Tokenizer tokenizer = TOKENIZER_FACTORY.tokenizer(doc.toCharArray(), 0, doc.length());
-
     tokenizer.tokenize(res, whiteList);
-
-    /*
-    for (int i = 0; i < res.size(); i++) {
-      System.out.print(res.get(i) + "|");
-    }
-    System.out.println("");
-    for (int i = 0; i < whiteList.size(); i++) {
-      System.out.print(whiteList.get(i) + "|");
-    }
-    System.out.println("\n");*/
 
     return res;
   }
 
   /**
+   * Create the term frequency vector
    * 
    * @param jcas
+   *          the JCas object
    * @param doc
+   *          the Document object
    */
   private void createTermFreqVector(JCas jcas, Document doc) {
 
     String docText = doc.getText();
 
-    // TO DO: construct a vector of tokens and update the tokenList in CAS
+    // construct a vector of tokens and update the tokenList in CAS
     List<String> tokens = tokenize1(docText);
 
     HashMap<String, Integer> token2Freq = new HashMap<String, Integer>();
@@ -153,6 +177,7 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
     doc.addToIndexes();
   }
 
+  /*
   private void printDocInfo(Document doc) {
     System.out.println(doc.getText());
     FSList tokenFSList = doc.getTokenList();
@@ -162,9 +187,10 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
     }
     System.out.println("\n");
   }
+  */
 
   /**
-   * Read file through stream LPDictExactNERAnnotator
+   * Read file through stream for Document Vector Annotator
    * 
    * @param filePath
    *          the file path

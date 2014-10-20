@@ -32,15 +32,33 @@ import edu.cmu.lti.f14.hw3.hw3_feixia.typesystems.Document;
 import edu.cmu.lti.f14.hw3.hw3_feixia.utils.FileOp;
 
 public class RetrievalEvaluator extends CasConsumer_ImplBase {
-  
+
+  /**
+   * Output file path
+   */
   String oPath;
 
-  private Set<Integer> allqid; 
+  /**
+   * All unique qid
+   */
+  private Set<Integer> allqid;
 
+  /**
+   * The map from qid to query DocVec
+   */
   private Map<Integer, DocVec> qid2Query;
 
+  /**
+   * The map from qid to a list of DocVec
+   */
   private Map<Integer, List<DocVec>> qid2DocVecs;
 
+  /**
+   * Initializes this CAS Consumer with the parameters specified in the descriptor.
+   * 
+   * @throws ResourceInitializationException
+   *           if there is error in initializing the resources
+   */
   public void initialize() throws ResourceInitializationException {
     oPath = (String) getUimaContext().getConfigParameterValue("outputFile");
 
@@ -50,7 +68,16 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
   }
 
   /**
-   * 1. construct the global word dictionary 2. keep the word frequency for each sentence
+   * For each Document object, construct the corresponding DocVec object. Memorize relative
+   * information to construct allqid, qid2Query, qid2DocVecs, which will be used later
+   * 
+   * @param aCAS
+   *          CasContainer which has been populated by the TAEs
+   * 
+   * @throws ResourceProcessException
+   *           if there is an error in processing the Resource
+   * 
+   * @see org.apache.uima.collection.base_cpm.CasObjectProcessor#processCas(CAS)
    */
   @Override
   public void processCas(CAS aCas) throws ResourceProcessException {
@@ -68,9 +95,10 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
       Document doc = (Document) it.next();
       int qid = doc.getQueryID();
 
-      // Do something useful here
+      // construct the allqid
       allqid.add(qid);
-      
+
+      // construct the qid2Query and qid2DocVecs
       DocVec docVec = new DocVec(doc);
       if (docVec.isQuery()) {
         qid2Query.put(qid, docVec);
@@ -88,7 +116,15 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
   }
 
   /**
-   * 1. Compute Cosine Similarity and rank the retrieved sentences 2. Compute the MRR metric
+   * Compute Cosine Similarity and rank the retrieved sentences. Compute the MRR metric.
+   * 
+   * @param arg0
+   *          ProcessTrace object that will log events in this method.
+   * @throws ResourceProcessException
+   *           if there is an error in processing the Resource
+   * @throws IOException
+   *           if there is an IO Error
+   * @see org.apache.uima.collection.CasConsumer#collectionProcessComplete(ProcessTrace)
    */
   @Override
   public void collectionProcessComplete(ProcessTrace arg0) throws ResourceProcessException,
@@ -113,17 +149,16 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
     List<DocVec> relDocVecs = DocVecOps.getRelDocVecs(qid2DocVecs);
     Collections.sort(relDocVecs, new QidComparator());
     outputAll(qid2DocVecs, qid2Query);
-    
 
     // compute the metric:: mean reciprocal rank
     double mrr = DocVecOps.compute_mrr(relDocVecs);
     System.out.println(" (MRR) Mean Reciprocal Rank ::" + mrr);
-    
+
+    // output to file
     String outString = DocVecOps.consOutStr(relDocVecs, mrr);
     FileOp.writeToFile(oPath, outString);
   }
 
-  
   public void outputAll(Map<Integer, List<DocVec>> qid2DocVecs, Map<Integer, DocVec> qid2Query) {
     StringBuilder sb = new StringBuilder();
     for (int qid : allqid) {
@@ -140,6 +175,5 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
     }
     FileOp.writeToFile("analysis.txt", sb.toString());
   }
-  
 
 }

@@ -16,7 +16,7 @@ public class DocumentReader extends JCasAnnotator_ImplBase {
     // reading sentence from the CAS
     String sLine = jcas.getDocumentText();
 
-    // TODO: make sure information from text collection are extracted correctly
+    // make sure information from text collection are extracted correctly
     ArrayList<String> docInfo = parseDataLine(sLine);
 
     // This is to make sure that parsing done properly and
@@ -40,6 +40,13 @@ public class DocumentReader extends JCasAnnotator_ImplBase {
     jcas.addFsToIndexes(doc);
   }
 
+  /**
+   * Parse the data lines
+   * 
+   * @param line
+   *          the line string
+   * @return a list of parsed items
+   */
   public static ArrayList<String> parseDataLine(String line) {
     ArrayList<String> docInfo;
 
