@@ -9,8 +9,8 @@
     <delegateAnalysisEngine key="DocumentReader">
       <import location="DocumentReader.xml"/>
     </delegateAnalysisEngine>
-    <delegateAnalysisEngine key="RetrievalEvaluator">
-      <import location="RetrievalEvaluator.xml"/>
+    <delegateAnalysisEngine key="GeneralRetrEval">
+      <import name="descriptors.retrievalsystem.GeneralRetrEval"/>
     </delegateAnalysisEngine>
   </delegateAnalysisEngineSpecifiers>
   <analysisEngineMetaData>
@@ -18,13 +18,13 @@
     <description/>
     <version/>
     <vendor/>
-    <configurationParameters/>
+    <configurationParameters searchStrategy="language_fallback"/>
     <configurationParameterSettings/>
     <flowConstraints>
       <fixedFlow>
         <node>DocumentReader</node>
         <node>DocumentVectorAnnotator</node>
-        <node>RetrievalEvaluator</node>
+        <node>GeneralRetrEval</node>
       </fixedFlow>
     </flowConstraints>
     <fsIndexCollection/>
