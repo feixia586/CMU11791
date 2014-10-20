@@ -5,7 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Used for DocVec operation.
+ * 
+ * @author Fei Xia <feixia@cs.cmu.edu>
+ *
+ */
 public class DocVecOps {
+  /**
+   * Compute the cosine similarity.
+   * 
+   * @param query
+   *          the query DocVec
+   * @param doc
+   *          the common DocVec
+   * @return the cosine similarity
+   */
   public static double computeCosineSim(DocVec query, DocVec doc) {
     Map<String, Integer> qryStrs = query.getToken2Freq();
     Map<String, Integer> docStrs = doc.getToken2Freq();
@@ -23,6 +38,13 @@ public class DocVecOps {
     return cosSim;
   }
 
+  /**
+   * Get relevant DocVec list.
+   * 
+   * @param qid2DocVecs
+   *          the qid to DocVec map
+   * @return the list of DocVec that are relevant to the query
+   */
   public static List<DocVec> getRelDocVecs(Map<Integer, List<DocVec>> qid2DocVecs) {
     List<DocVec> relDocVecs = new ArrayList<DocVec>();
 
@@ -40,8 +62,9 @@ public class DocVecOps {
   }
 
   /**
+   * Compute the MRR
    * 
-   * @return mrr
+   * @return the MRR
    */
   public static double compute_mrr(List<DocVec> relDocVecs) {
     double mrr = 0.0;
@@ -57,6 +80,15 @@ public class DocVecOps {
     return mrr;
   }
 
+  /**
+   * Construct the output string
+   * 
+   * @param relDocVecs
+   *          the list of relevant DocVec
+   * @param mrr
+   *          the MRR
+   * @return the constructed output string
+   */
   public static String consOutStr(List<DocVec> relDocVecs, double mrr) {
     StringBuilder sb = new StringBuilder();
     DecimalFormat df = new DecimalFormat("0.0000");
