@@ -9,21 +9,9 @@
     <version>1.0</version>
     <vendor/>
     <configurationParameters>
-      <configurationParameter>
-        <name>stopFilePath</name>
-        <type>String</type>
-        <multiValued>false</multiValued>
-        <mandatory>true</mandatory>
-      </configurationParameter>
-    </configurationParameters>
+      </configurationParameters>
     <configurationParameterSettings>
-      <nameValuePair>
-        <name>stopFilePath</name>
-        <value>
-          <string>stopwords.txt</string>
-        </value>
-      </nameValuePair>
-    </configurationParameterSettings>
+      </configurationParameterSettings>
     <typeSystemDescription>
       <imports>
 		<import location="../typesystems/VectorSpaceTypes.xml"/>

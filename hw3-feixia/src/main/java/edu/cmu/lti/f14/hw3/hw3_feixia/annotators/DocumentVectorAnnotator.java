@@ -41,21 +41,6 @@ import edu.cmu.lti.f14.hw3.hw3_feixia.utils.Utils;
 public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
 
   /**
-   * The tokenizer factory
-   */
-  private TokenizerFactory TOKENIZER_FACTORY;
-
-  /**
-   * Stop words set
-   */
-  private Set<String> stopSet;
-
-  /**
-   * Stop words file path
-   */
-  private String stopFilePath;
-
-  /**
    * Perform initialization logic.
    * 
    * @param aContext
