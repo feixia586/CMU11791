@@ -122,5 +122,9 @@
 		</dependency>
 	</dependencies>
 
-
+	<scm>
+		<connection>scm:git:git@github.com:feixia586/CMU11791.git</connection>
+		<developerConnection>scm:git:git@github.com:feixia586/CMU11791.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
 </project>
