@@ -1,19 +1,27 @@
 package edu.cmu.lti.f14.hw3.hw3_feixia.casconsumers;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+
+import javax.print.Doc;
+import javax.wsdl.Output;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
 import org.apache.uima.collection.CasConsumer_ImplBase;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.FSList;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceProcessException;
 import org.apache.uima.util.ProcessTrace;
@@ -140,6 +148,7 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
     }
     List<DocVec> relDocVecs = DocVecOps.getRelDocVecs(qid2DocVecs);
     Collections.sort(relDocVecs, new QidComparator());
+    outputAll(qid2DocVecs, qid2Query);
 
     // compute the metric:: mean reciprocal rank
     double mrr = DocVecOps.compute_mrr(relDocVecs);
@@ -149,4 +158,22 @@ public class RetrievalEvaluator extends CasConsumer_ImplBase {
     String outString = DocVecOps.consOutStr(relDocVecs, mrr);
     FileOp.writeToFile(oPath, outString);
   }
+
+  public void outputAll(Map<Integer, List<DocVec>> qid2DocVecs, Map<Integer, DocVec> qid2Query) {
+    StringBuilder sb = new StringBuilder();
+    for (int qid : allqid) {
+      sb.append(qid2Query.get(qid).getDocText() + "\n");
+      List<DocVec> docVecList = qid2DocVecs.get(qid);
+      for (DocVec docVec : docVecList) {
+        sb.append("qid=" + docVec.getqid() + "\t");
+        sb.append("rel=" + docVec.getRel() + "\t");
+        sb.append("cos=" + docVec.getCosSim() + "\t");
+        sb.append("rank=" + docVec.getRank() + "\t");
+        sb.append(docVec.getDocText() + "\n");
+      }
+      sb.append("\n");
+    }
+    FileOp.writeToFile("analysis.txt", sb.toString());
+  }
+
 }

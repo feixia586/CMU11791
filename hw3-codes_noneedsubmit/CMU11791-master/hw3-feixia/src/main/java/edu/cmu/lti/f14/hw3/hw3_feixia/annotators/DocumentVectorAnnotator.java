@@ -64,7 +64,6 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
     super.initialize(aContext);
 
-    /*
     stopFilePath = (String) getContext().getConfigParameterValue("stopFilePath");
     stopSet = new HashSet<String>();
 
@@ -76,10 +75,14 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
     }
 
     TOKENIZER_FACTORY = IndoEuropeanTokenizerFactory.INSTANCE;
-    TOKENIZER_FACTORY = new StopTokenizerFactory(TOKENIZER_FACTORY, stopSet);
-    TOKENIZER_FACTORY = new LowerCaseTokenizerFactory(TOKENIZER_FACTORY);
-    TOKENIZER_FACTORY = new PorterStemmerTokenizerFactory(TOKENIZER_FACTORY);
-    */
+    // TOKENIZER_FACTORY = new PorterStemmerTokenizerFactory(IndoEuropeanTokenizerFactory.INSTANCE);
+
+    // TOKENIZER_FACTORY = new LowerCaseTokenizerFactory(IndoEuropeanTokenizerFactory.INSTANCE);
+    // TOKENIZER_FACTORY = new StopTokenizerFactory(new
+    // LowerCaseTokenizerFactory(IndoEuropeanTokenizerFactory.INSTANCE), stopSet);
+    // TOKENIZER_FACTORY = new PorterStemmerTokenizerFactory(new
+    // LowerCaseTokenizerFactory(IndoEuropeanTokenizerFactory.INSTANCE));
+
   }
 
   /**
@@ -117,11 +120,14 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
     return res;
   }
 
-  /*
+  /**
    * An advanced tokenizer, ultimately, it uses LingPipe tokenizer and can convert tokens to lower
    * cases, remove stop words, stemming, etc.
+   * 
+   * @param doc
+   *          input text
+   * @return a list of tokens in string
    */
-  /*
   private List<String> tokenize1(String doc) {
     List<String> res = new ArrayList<String>();
     List<String> whiteList = new ArrayList<String>();
@@ -130,7 +136,7 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
     tokenizer.tokenize(res, whiteList);
 
     return res;
-  }*/
+  }
 
   /**
    * Create the term frequency vector
@@ -145,7 +151,7 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
     String docText = doc.getText();
 
     // construct a vector of tokens and update the tokenList in CAS
-    List<String> tokens = tokenize0(docText);
+    List<String> tokens = tokenize1(docText);
 
     HashMap<String, Integer> token2Freq = new HashMap<String, Integer>();
     for (String token : tokens) {
@@ -172,6 +178,18 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
   }
 
   /*
+  private void printDocInfo(Document doc) {
+    System.out.println(doc.getText());
+    FSList tokenFSList = doc.getTokenList();
+    List<Token> tokenList = Utils.fromFSListToCollection(tokenFSList, Token.class);
+    for (Token token : tokenList) {
+      System.out.print(token.getText() + "(" + token.getFrequency() + ")");
+    }
+    System.out.println("\n");
+  }
+  */
+
+  /**
    * Read file through stream for Document Vector Annotator
    * 
    * @param filePath
@@ -179,7 +197,6 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
    * @return the string of the file
    * @throws ResourceInitializationException
    */
-  /*
   private String getFileAsStream(String filePath) throws ResourceInitializationException {
     StringBuilder sb = new StringBuilder();
     try {
@@ -203,5 +220,5 @@ public class DocumentVectorAnnotator extends JCasAnnotator_ImplBase {
 
     String content = sb.toString();
     return content;
-  }*/
+  }
 }
