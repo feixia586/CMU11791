@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>edu.cmu.lti.11791.f14.hw2</groupId>
 	<artifactId>hw2-feixia</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.3</version>
 	<repositories>
 		<repository>
 			<id>oaqa</id>
@@ -105,6 +105,6 @@
 	<scm>
 		<connection>scm:git:git@github.com:feixia586/CMU11791.git</connection>
 		<developerConnection>scm:git:git@github.com:feixia586/CMU11791.git</developerConnection>
-	  <tag>HEAD</tag>
+	  <tag>hw2-feixia-0.0.3</tag>
   </scm>
 </project>
